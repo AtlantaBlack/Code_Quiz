@@ -31,8 +31,7 @@ var questionsBank = [
     }
 ];
 
-// variable for correct answers
-var correctAnswers = 0;
+var userChoice = "";
 
 // for player names and scores
 var playerName = localStorage.getItem("playerName");
@@ -78,9 +77,17 @@ function loadQuestions() {
     }
 }
 
-function checkAnswers() {
-    userChoice = questionsBank[index].choices;
+function checkAnswers(userChoice) {
+    let i = index;
+    let isCorrect = false;
+    
+    userChoice = questionsBank[index].choices[i];
     console.log(userChoice);
+
+    if (userChoice === questionsBank[index].answer);
+        isCorrect = true;
+        console.log("true");
+
 }
 
 
