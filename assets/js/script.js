@@ -5,40 +5,31 @@ var startQuizButton = document.getElementById("start-quiz-btn");
 
 
 // questions and answers:
-var questions = [
-    { 
-    id: 0,
-    q: "Pick Javascript",
-    a: [
-        { text: "one", isCorrect: false },
-        { text: "javascript", isCorrect: true },
-        { text: "two", isCorrect: false } 
-        ]
-    },
 
-    { 
-    id: 1, 
-    q: "Pick boolean",
-    a: [
-        { text: "one", isCorrect: false },
-        { text: "boolean", isCorrect: true },
-        { text: "two", isCorrect: false } 
-        ]
+// dummy questions/answers for testing first
+var questionsBank = [
+    {
+        title: "pick javascript",
+        choices: ["a", "b", "c", "javascript"],
+        answer: "javascript"
     },
-
-    { 
-    id: 2, 
-    q: "Pick string",
-    a: [
-        { text: "one", isCorrect: false },
-        { text: "string", isCorrect: true },
-        { text: "two", isCorrect: false }
-    ]
+    {
+        title: "pick boolean",
+        choices: ["a", "b", "c", "boolean"],
+        answer: "boolean"
     },
-]
+    {
+        title: "pick string",
+        choices: ["a", "b", "c", "string"],
+        answer: "string"
+    },
+    {
+        title: "pick array",
+        choices: ["a", "b", "c", "array"],
+        answer: "array"
+    }
+];
 
-// results variables
-var correctAnswers = 0;
 
 
 // for player names and scores
@@ -52,10 +43,19 @@ var secondsLeft = 4; // set 4 for testing
 
 // functions
 
-function resultsPage() {
 
+
+function loadQuestions() {
+    var questionsBox = document.createElement("div");
+    var questionsBoxContent = document.createTextNode("blah blah");
+
+    questionsBox.appendChild(questionsBoxContent);
+
+    quizBoxArea.appendChild(questionsBox);
 
 }
+
+loadQuestions();
 
 // timer function
 function startTimer() {
@@ -66,7 +66,6 @@ function startTimer() {
         if (secondsLeft < 0) {
             clearInterval(timer);
             console.log(secondsLeft + " seconds left & working");
-            // resultsPage();
         }
     }, 1000);
 }
@@ -74,8 +73,8 @@ function startTimer() {
 
 function startQuiz () {
     secondsLeft = 60;
-    startTimer();
     loadQuestions();
+    startTimer();
 }
 
 

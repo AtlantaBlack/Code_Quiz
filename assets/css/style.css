@@ -78,7 +78,9 @@ header div {
 
 /* QUIZ STUFF */
 
-
+#quiz-box {
+    text-align: center;
+}
 
 
 /* FOOTER */
