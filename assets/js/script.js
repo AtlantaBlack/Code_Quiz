@@ -65,18 +65,19 @@ function loadQuestions() {
     // append for strings; appendChild for DOM elements
     questionContainer.append(questionTitle);
 
+    // create a button for each choice
     for (let i = 0; i < questionChoices.length; i++) {
         var userOptionBtn = document.createElement("button");
         userOptionBtn.textContent = questionChoices[i];
-        // userOption.style.cssText = "color:red; font-weight:bold;"
 
+        // add a condition and data attribute to decide if an option is true or false
         if (questionChoices[i] === questionsBank[index].answer) {
             userOptionBtn.setAttribute("data-value", "true");
         } else {
             userOptionBtn.setAttribute("data-value", "false");
         } 
 
-
+        // add the button to the div container
         questionContainer.appendChild(userOptionBtn);
 
         // when user option is clicked, check the answers
@@ -84,6 +85,7 @@ function loadQuestions() {
     }
 }
 
+// check values of the click event to determine if answer is right or wrong
 function checkAnswers(event) {
     let value = event.currentTarget.dataset.value;
 
@@ -92,16 +94,6 @@ function checkAnswers(event) {
     } else {
         console.log("noo")
     }
-
-    // let i = index;
-    // let isCorrect = false;
-    
-    // userChoice = questionsBank[index].choices[i];
-    // console.log(userChoice);
-
-    // if (userChoice === questionsBank[index].answer);
-    //     isCorrect = true;
-    //     console.log("true");
 
 }
 
