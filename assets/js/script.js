@@ -70,6 +70,13 @@ function loadQuestions() {
         userOptionBtn.textContent = questionChoices[i];
         // userOption.style.cssText = "color:red; font-weight:bold;"
 
+        if (questionChoices[i] === questionsBank[index].answer) {
+            userOptionBtn.setAttribute("data-value", "true");
+        } else {
+            userOptionBtn.setAttribute("data-value", "false");
+        } 
+
+
         questionContainer.appendChild(userOptionBtn);
 
         // when user option is clicked, check the answers
@@ -77,16 +84,24 @@ function loadQuestions() {
     }
 }
 
-function checkAnswers(userChoice) {
-    let i = index;
-    let isCorrect = false;
-    
-    userChoice = questionsBank[index].choices[i];
-    console.log(userChoice);
+function checkAnswers(event) {
+    let value = event.currentTarget.dataset.value;
 
-    if (userChoice === questionsBank[index].answer);
-        isCorrect = true;
-        console.log("true");
+    if (value === "true") {
+        console.log("yay");
+    } else {
+        console.log("noo")
+    }
+
+    // let i = index;
+    // let isCorrect = false;
+    
+    // userChoice = questionsBank[index].choices[i];
+    // console.log(userChoice);
+
+    // if (userChoice === questionsBank[index].answer);
+    //     isCorrect = true;
+    //     console.log("true");
 
 }
 
