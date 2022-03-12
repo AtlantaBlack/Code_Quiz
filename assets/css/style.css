@@ -48,6 +48,11 @@ header div {
     margin: 50px 30px 30px;
 }
 
+#timer-span {
+    border: 1px solid red;
+    display: inline;
+}
+
 
 /* MAIN */
 
@@ -64,11 +69,17 @@ header div {
     flex: 1 0 auto;
 }
 
-.content-box {
+.content-div {
     border: 1px solid red;
     background-color: palegoldenrod;
     padding: 12.5vw;
 }
+
+
+/* QUIZ STUFF */
+
+
+
 
 /* FOOTER */
 

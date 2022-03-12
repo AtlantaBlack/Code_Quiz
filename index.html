@@ -15,14 +15,14 @@
         <div class="header-flexbox">
 
             <div class="header-container">
-                <div class="view-scores-div">
+                <div class="view-scores-div" id="highscores-box">
                     <p class="highscores">View Scores</p>
                 </div>
             </div>
 
             <div class="header-container">
-                <div class="timer-div">
-                    <p class="timer">Timer</p>
+                <div class="timer-div" id="timer-box">
+                    <p>Timer: <span id="timer-span">--</span></p>
                 </div>
             </div>
 
@@ -33,12 +33,12 @@
         <div class="main-flexbox">
 
             <div class="main-container">
-                <div class="content-box">
+                <div class="content-div" id="quiz-box">
                     <h1>Javascript Coding Quiz</h1>
 
                     <p>Let's do a fun little quiz to test your Javascript knowledge!</p>
 
-                    <button>START</button>
+                    <button id="start-quiz-btn">START</button>
                 </div>
             </div>
 
