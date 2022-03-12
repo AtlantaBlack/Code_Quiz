@@ -3,6 +3,8 @@ var timerElement = document.getElementById("timer-span");
 var quizBoxArea = document.getElementById("quiz-box");
 var startQuizButton = document.getElementById("start-quiz-btn");
 
+// to use index later, set it to 0 here first
+var index = 0;
 
 // questions and answers:
 
@@ -46,16 +48,42 @@ var secondsLeft = 4; // set 4 for testing
 
 
 function loadQuestions() {
-    var questionsBox = document.createElement("div");
-    var questionsBoxContent = document.createTextNode("blah blah");
+    // clear the area
+    document.querySelector("#question-container").innerHTML = "";
 
-    questionsBox.appendChild(questionsBoxContent);
+    // hide the welcome message
+    document.querySelector("#welcome-message").style.display = "none";
 
-    quizBoxArea.appendChild(questionsBox);
+    var questionTitle = questionsBank[index].title;
+    var questionChoices = questionsBank[index].choices;
+
+    // add the question bank title to the question container div
+    // append for strings; appendChild for DOM elements
+    document.querySelector("#question-container").append(questionTitle);
+
+    for (let i = 0; i < questionChoices.length; i++) {
+        const button = document.createElement("button");
+        button.textContent = questionChoices[i];
+
+       document.querySelector("#question-container").appendChild(button);
+    }
+
+
+
+    // var questionsBox = document.createElement("div");
+    // questionsBox.style.backgroundColor = "blue";
+    
+
+
+    // var questionsBoxContent = document.createTextNode("blah blah");
+
+    // questionsBox.appendChild(questionsBoxContent);
+
+    // quizBoxArea.appendChild(questionsBox);
 
 }
 
-loadQuestions();
+// loadQuestions();
 
 // timer function
 function startTimer() {
@@ -75,8 +103,17 @@ function startQuiz () {
     secondsLeft = 60;
     loadQuestions();
     startTimer();
+
+    //make a next button
+    const button = document.createElement("button");
+    button.textContent = "next";
+    button.addEventListener("click", () => {
+        index++;
+        loadQuestions();
+        })
+    quizBoxArea.appendChild(button);
 }
 
 
 // add event listeners:
-// startQuizButton.addEventListener("click", startQuiz);
+startQuizButton.addEventListener("click", startQuiz);
