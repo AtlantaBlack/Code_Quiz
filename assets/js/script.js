@@ -7,7 +7,6 @@ var startQuizButton = document.getElementById("start-quiz-btn");
 var index = 0;
 
 // questions and answers:
-
 // dummy questions/answers for testing first
 var questionsBank = [
     {
@@ -32,7 +31,8 @@ var questionsBank = [
     }
 ];
 
-
+// variable for correct answers
+var correctAnswers = 0;
 
 // for player names and scores
 var playerName = localStorage.getItem("playerName");
@@ -48,42 +48,42 @@ var secondsLeft = 4; // set 4 for testing
 
 
 function loadQuestions() {
-    // clear the area
-    document.querySelector("#question-container").innerHTML = "";
+    // set welcome msg and container variables
+    var welcomeMessage = document.getElementById("welcome-message");
+    var questionContainer = document.getElementById("question-container");
+
+    //clear the question container box
+    questionContainer.innerHTML = "";
 
     // hide the welcome message
-    document.querySelector("#welcome-message").style.display = "none";
+    welcomeMessage.style.display = "none";
 
+    // create title and choice variables for readability
     var questionTitle = questionsBank[index].title;
     var questionChoices = questionsBank[index].choices;
 
     // add the question bank title to the question container div
     // append for strings; appendChild for DOM elements
-    document.querySelector("#question-container").append(questionTitle);
+    questionContainer.append(questionTitle);
 
     for (let i = 0; i < questionChoices.length; i++) {
-        const button = document.createElement("button");
-        button.textContent = questionChoices[i];
+        var userOptionBtn = document.createElement("button");
+        userOptionBtn.textContent = questionChoices[i];
+        // userOption.style.cssText = "color:red; font-weight:bold;"
 
-       document.querySelector("#question-container").appendChild(button);
+        questionContainer.appendChild(userOptionBtn);
+
+        // when user option is clicked, check the answers
+        userOptionBtn.addEventListener("click", checkAnswers);
     }
-
-
-
-    // var questionsBox = document.createElement("div");
-    // questionsBox.style.backgroundColor = "blue";
-    
-
-
-    // var questionsBoxContent = document.createTextNode("blah blah");
-
-    // questionsBox.appendChild(questionsBoxContent);
-
-    // quizBoxArea.appendChild(questionsBox);
-
 }
 
-// loadQuestions();
+function checkAnswers() {
+    userChoice = questionsBank[index].choices;
+    console.log(userChoice);
+}
+
+
 
 // timer function
 function startTimer() {
@@ -105,13 +105,15 @@ function startQuiz () {
     startTimer();
 
     //make a next button
-    const button = document.createElement("button");
-    button.textContent = "next";
-    button.addEventListener("click", () => {
-        index++;
-        loadQuestions();
+    var nextButton = document.createElement("button");
+    nextButton.textContent = "next";
+    nextButton.addEventListener("click", () => {
+        if (index < questionsBank.length) {
+            index++;
+            loadQuestions();
+            }
         })
-    quizBoxArea.appendChild(button);
+    quizBoxArea.appendChild(nextButton);
 }
 
 

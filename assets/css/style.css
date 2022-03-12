@@ -82,6 +82,16 @@ header div {
     text-align: center;
 }
 
+#question-container {
+    height:300px;
+    background-color: pink;
+    font-size: 30px;
+}
+
+#question-container button {
+    display: block;
+}
+
 
 /* FOOTER */
 
