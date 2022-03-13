@@ -95,13 +95,13 @@ function checkAnswers(event) {
     var value = event.currentTarget.dataset.value;
     var atEnd = event.currentTarget.dataset.end;
 
-    if (index === questionsBank.length) {
+      if (index === questionsBank.length) {
         atEnd = "true";
         console.log("last at the end? " + atEnd);
         showHighScores();
     }
 
-    if (value === "true" && index < questionsBank.length) {
+    else if (value === "true" && index < questionsBank.length) {
         console.log("at the end? " + atEnd);
         console.log("yay");
         index++;
