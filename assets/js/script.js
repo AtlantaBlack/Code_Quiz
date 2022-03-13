@@ -101,27 +101,31 @@ function checkAnswers(event) {
         isAtEnd = "true";
         clearInterval(timer);
         showHighScores();
-    
-    // if user chose correct answer AND index under question bank length, add index -- then, IF timer is under 0, go to high score section; otherwise load the next q
-    } else if (value === "true" && index < (questionsBank.length - 1)) {
-        index++;
-            if (secondsLeft < 0) {
-                showHighScores();
-            } else {
-                loadQuestions();
-            }
+    }
 
     // if user chose incorrect answer and there are still more questions, apply timer penalty
-    } else if (value === "false" && (index < questionsBank.length - 1)) {
-        deductTime();
+    else if (value === "false" && (index < questionsBank.length - 1)) {
+    deductTime();
+    index++;
+        if (secondsLeft < 0) {
+            timerElement.textContent = 0 + " s";
+            showHighScores();
+        } else {
+            loadQuestions();
+        }
+    } 
+
+    // if user chose correct answer AND index under question bank length, add index -- then, IF timer is under 0, go to high score section; otherwise load the next q
+    else if (value === "true" && index < (questionsBank.length - 1)) {
         index++;
             if (secondsLeft < 0) {
-                timerElement.textContent = 0 + " s";
                 showHighScores();
             } else {
                 loadQuestions();
             }
-    } 
+        }
+
+    
 
 }
 
@@ -163,7 +167,7 @@ function startTimer() {
 
 
 function startQuiz () {
-    secondsLeft = 30;
+    secondsLeft = 20;
     loadQuestions();
     startTimer();
 
