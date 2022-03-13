@@ -15,6 +15,9 @@ var highScoresSection = document.getElementById("high-scores-section");
 // to use index later, set it to 0 here first
 var index = 0;
 
+
+var playerResults = [];
+
 // timer variables
 var secondsLeft;
 var timer;
@@ -45,15 +48,6 @@ var questionsBank = [
 ];
 
 
-// set an object for the player upon submission
-// var player = {
-//     playerName: playerNameInput.value.trim(),
-//     playerScore: secondsLeft
-// };
-
-// for retrieving the player scores
-// var playerScore = JSON.parse(localStorage.getItem("player"));
-
 
 // functions
 
@@ -63,6 +57,7 @@ function loadQuestions() {
 
     // hide the welcome message, player details box, highscores box
     welcomeMessage.style.display = "none";
+    questionSection.style.display = "block";
     playerDetailsSection.style.display = "none";
     highScoresSection.style.display="none";
 
@@ -107,8 +102,6 @@ function checkAnswers(event) {
     if (index === (questionsBank.length - 1)) {
         isAtEnd = "true";
         clearInterval(timer);
-        // setPlayerScore();
-        // console.log("setting the score");
         addPlayerDetails();
     }
 
@@ -119,8 +112,6 @@ function checkAnswers(event) {
         if (secondsLeft < 0) {
             secondsLeft = 0;
             timerElement.textContent = 0 + " s";
-            // setPlayerScore();
-            // console.log("setting the score");
             addPlayerDetails();
         } else {
             loadQuestions();
@@ -131,8 +122,6 @@ function checkAnswers(event) {
     else if (value === "true" && index < (questionsBank.length - 1)) {
         index++;
             if (secondsLeft < 0) {
-                // setPlayerScore();
-                // console.log("setting the score");
                 addPlayerDetails();
             } else {
                 loadQuestions();
@@ -141,26 +130,18 @@ function checkAnswers(event) {
 }
 
 
-// function setPlayerScore() {
-//     localStorage.setItem("player", JSON.stringify(player));
-// }
-
-// function retrievePlayerScore() {
-//     playerScore;
-//     console.log("retrieving");
-// }
-
-
 function addPlayerDetails() {
+
     playerDetailsSection.innerHTML = "";
 
-    welcomeMessage.style.display = "none";
+    // welcomeMessage.style.display = "none";
     questionSection.style.display = "none";
-    highScoresSection.style.display = "none";
+    playerDetailsSection.style.display = "block";
+    // highScoresSection.style.display="none";
 
 
-    var titleTag = document.createElement("h2");
-    titleTag.append("The quiz has ended!");
+    var pdsTitle = document.createElement("h2");
+    pdsTitle.append("The quiz has ended!");
 
     var flavourText = document.createElement("p");
     flavourText.textContent = "Your score is: " + secondsLeft;
@@ -169,11 +150,12 @@ function addPlayerDetails() {
     userForm.setAttribute("method", "post");
 
     var formLabel = document.createElement("label");
-    formLabel.textContent = "Your name: ";
+    formLabel.textContent = "Your initials: ";
 
     var formInput = document.createElement("input");
     formInput.setAttribute("type", "text");
-    formInput.setAttribute("name", "username");
+    formInput.setAttribute("id", "playerInitialsInput");
+    
 
     var submitBtn = document.createElement("input");
     submitBtn.setAttribute("type", "submit");
@@ -183,18 +165,59 @@ function addPlayerDetails() {
     userForm.appendChild(formInput);
     userForm.appendChild(submitBtn);
 
-    playerDetailsSection.appendChild(titleTag);
+    playerDetailsSection.appendChild(pdsTitle);
     playerDetailsSection.appendChild(flavourText);
     playerDetailsSection.appendChild(userForm);
 
+    // setting the score
 
-    // set the score
-    
-    
+    submitBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        setPlayerScore();
+        showHighScores();
+
+        // setPlayerScore();
+    })
 }
 
+function setPlayerScore() {
+    // set an object for the player upon submission
+    var player = {
+        playerInitials: document.getElementById("playerInitialsInput").value.trim(),
+        playerScore: secondsLeft
+    };
+
+    playerResults.push({"Initials": player.playerInitials, "score": player.playerScore});
+
+    localStorage.setItem("Player Results", JSON.stringify(playerResults));
+}
+
+
+function retrievePlayerScore() {
+    // for retrieving the player scores
+    JSON.parse(localStorage.getItem("playerResults"));
+
+}
+
+
 function showHighScores() {
-    //code
+    highScoresSection.innerHTML = "";
+
+    welcomeMessage.style.display = "none";
+    questionSection.style.display = "none";
+    playerDetailsSection.style.display = "none";
+    highScoresSection.style.display = "block";
+
+    var hssTitle = document.createElement("h2");
+    hssTitle.textContent = "High Scores";
+    
+    highScoresSection.appendChild(hssTitle);
+
+    retrievePlayerScore();
+
+    
+
 }
 
 

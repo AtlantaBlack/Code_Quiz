@@ -105,6 +105,10 @@ header div {
     background-color: lightblue;
 }
 
+#player-details-section form {
+    border: 1px solid red;
+}
+
 
 /* FOOTER */
 
