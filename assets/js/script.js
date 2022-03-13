@@ -86,9 +86,8 @@ function loadQuestions() {
 
         // when user option is clicked, check the answers
         userOptionBtn.addEventListener("click", checkAnswers);
+        
     }
-
-    
 }
 
 // check values of the click event to determine if answer is right or wrong
@@ -96,23 +95,25 @@ function checkAnswers(event) {
     let value = event.currentTarget.dataset.value;
     let atEnd = event.currentTarget.dataset.end;
 
-    if (value === "true") {
+    if (index > questionsBank.length) {
+        atEnd = "true";
+        console.log("last at the end? " + atEnd);
+        showHighScores();
+    }
+
+    if (value === "true" && index < questionsBank.length) {
         console.log("at the end? " + atEnd);
         console.log("yay");
         index++;
         loadQuestions();
-    } else {
+    } else if (value === "false" && index < questionsBank.length) {
         console.log("at the end? " + atEnd);
         console.log("noo");
         // deductTime();
         index++;
         loadQuestions();
-    } 
-    
-    if (index > questionsBank.length)
-        atEnd = "true";
-        console.log("last at the end? " + atEnd);
-        showHighScores();
+    }
+
     
 
 }
