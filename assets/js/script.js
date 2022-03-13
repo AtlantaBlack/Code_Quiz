@@ -194,13 +194,23 @@ function setPlayerScore() {
 function retrievePlayerScore() {
     // variable, for loop, append
     var data = JSON.parse(localStorage.getItem("Results"));
+
+    console.log(data);
     
-    //change the second line to a for or for each loop to extract data out of the new Results array
-    var showData = document.createElement("li");
-    showData.textContent = data.playerInitials + " " + data.playerScore;
+    //change the second line to a for- or for-each loop to extract data out of the new Results array
+    // data.forEach(function (item, index) {
+    //     var showData = document.createElement("li");
+    //     showData.append(item, index);
+    // });
 
 
-    highScoresSection.appendChild(showData)
+    for (i = 0; i < data.length; i++) {
+        var showData = document.createElement("div");
+        showData.textContent = data[i];
+    }
+
+
+    highScoresSection.appendChild(showData);
 
 }
 
