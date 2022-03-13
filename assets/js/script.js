@@ -16,8 +16,6 @@ var highScoresSection = document.getElementById("high-scores-section");
 var index = 0;
 
 
-// var playerResults = [];
-
 // timer variables
 var secondsLeft;
 var timer;
@@ -172,30 +170,27 @@ function addPlayerDetails() {
 
         setPlayerScore();
         showHighScores();
-
-        // setPlayerScore();
     })
 }
 
 function setPlayerScore() {
-    // set an object for the player upon submission
     var player = {
         playerInitials: document.getElementById("playerInitialsInput").value.trim(),
         playerScore: secondsLeft
-    };
+    }
 
-    // playerResults.push({"Initials": player.playerInitials, "score": player.playerScore});
+    localStorage.setItem("Results", JSON.stringify(player));
 
-    localStorage.setItem("Player Results", JSON.stringify(player));
 }
 
 
 function retrievePlayerScore() {
     // variable, for loop, append
-    var data = JSON.parse(localStorage.getItem("Player Results"));
+    var data = JSON.parse(localStorage.getItem("Results"));
     
-    var showData = document.createElement("div");
-    showData.textContent = data.playerInitials + data.playerScore;
+
+    var showData = document.createElement("li");
+    showData.textContent = data.playerInitials + " " + data.playerScore;
 
 
     highScoresSection.appendChild(showData)
@@ -216,7 +211,7 @@ function showHighScores() {
     
     highScoresSection.appendChild(hssTitle);
 
-
+    retrievePlayerScore();
 
 }
 
