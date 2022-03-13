@@ -16,7 +16,7 @@ var highScoresSection = document.getElementById("high-scores-section");
 var index = 0;
 
 
-var playerResults = [];
+// var playerResults = [];
 
 // timer variables
 var secondsLeft;
@@ -78,10 +78,10 @@ function loadQuestions() {
         // add a condition and data attribute to decide if an option is true or false, or at the end of the block of questions or not
         if (questionChoices[i] === questionsBank[index].answer) {
             userOptionBtn.setAttribute("data-value", "true");
-            userOptionBtn.setAttribute("data-atEnd", "false");
+            userOptionBtn.setAttribute("data-end", "false");
         } else {
             userOptionBtn.setAttribute("data-value", "false");
-            userOptionBtn.setAttribute("data-atEnd", "false");
+            userOptionBtn.setAttribute("data-end", "false");
         } 
 
         // add the button to the div container
@@ -96,7 +96,7 @@ function loadQuestions() {
 function checkAnswers(event) {
     // grab btn data attributes set in loadQuestions function
     var value = event.currentTarget.dataset.value;
-    var isAtEnd = event.currentTarget.dataset.atEnd;
+    var isAtEnd = event.currentTarget.dataset.end;
 
     // first, if index's added total matches the number of the last question's index, then "is at the end (of the question block)" becomes true
     if (index === (questionsBank.length - 1)) {
@@ -142,32 +142,28 @@ function addPlayerDetails() {
 
     var pdsTitle = document.createElement("h2");
     pdsTitle.append("The quiz has ended!");
+    playerDetailsSection.appendChild(pdsTitle);
 
     var flavourText = document.createElement("p");
     flavourText.textContent = "Your score is: " + secondsLeft;
+    playerDetailsSection.appendChild(flavourText);
 
-    var userForm = document.createElement("form");
-    userForm.setAttribute("method", "post");
 
     var formLabel = document.createElement("label");
     formLabel.textContent = "Your initials: ";
+    playerDetailsSection.appendChild(formLabel);
 
     var formInput = document.createElement("input");
     formInput.setAttribute("type", "text");
     formInput.setAttribute("id", "playerInitialsInput");
+    playerDetailsSection.appendChild(formInput);
     
 
-    var submitBtn = document.createElement("input");
+    var submitBtn = document.createElement("button");
+    submitBtn.textContent = "submit";
     submitBtn.setAttribute("type", "submit");
-    submitBtn.setAttribute("value", "Submit");
-
-    userForm.appendChild(formLabel);
-    userForm.appendChild(formInput);
-    userForm.appendChild(submitBtn);
-
-    playerDetailsSection.appendChild(pdsTitle);
-    playerDetailsSection.appendChild(flavourText);
-    playerDetailsSection.appendChild(userForm);
+    submitBtn.setAttribute("id", "Submit");
+    playerDetailsSection.appendChild(submitBtn);
 
     // setting the score
 
@@ -188,15 +184,21 @@ function setPlayerScore() {
         playerScore: secondsLeft
     };
 
-    playerResults.push({"Initials": player.playerInitials, "score": player.playerScore});
+    // playerResults.push({"Initials": player.playerInitials, "score": player.playerScore});
 
-    localStorage.setItem("Player Results", JSON.stringify(playerResults));
+    localStorage.setItem("Player Results", JSON.stringify(player));
 }
 
 
 function retrievePlayerScore() {
-    // for retrieving the player scores
-    JSON.parse(localStorage.getItem("Player Results"));
+    // variable, for loop, append
+    var data = JSON.parse(localStorage.getItem("Player Results"));
+    
+    var showData = document.createElement("div");
+    showData.textContent = data.playerInitials + data.playerScore;
+
+
+    highScoresSection.appendChild(showData)
 
 }
 
@@ -214,8 +216,6 @@ function showHighScores() {
     
     highScoresSection.appendChild(hssTitle);
 
-    retrievePlayerScore();
-
 
 
 }
@@ -231,6 +231,7 @@ function startTimer() {
         if (secondsLeft < 0) {
             clearInterval(timer);
             timerElement.textContent = 0 + " s";
+            addPlayerDetails();
         
         // if index reaches the index of the last question, clear the timer
         } else if (index === questionsBank.length - 1) {
