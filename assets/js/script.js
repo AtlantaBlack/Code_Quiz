@@ -158,15 +158,15 @@ function startQuiz () {
     startTimer();
 
     //make a next button
-    var nextButton = document.createElement("button");
-    nextButton.textContent = "next";
-    nextButton.addEventListener("click", () => {
-        if (index < questionsBank.length) {
-            index++;
-            loadQuestions();
-            }
-        })
-    quizBoxArea.appendChild(nextButton);
+    // var nextButton = document.createElement("button");
+    // nextButton.textContent = "next";
+    // nextButton.addEventListener("click", () => {
+    //     if (index < questionsBank.length) {
+    //         index++;
+    //         loadQuestions();
+    //         }
+    //     })
+    // quizBoxArea.appendChild(nextButton);
 }
 
 
