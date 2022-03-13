@@ -89,7 +89,7 @@ header div {
     text-align: center;
 }
 
-#question-container {
+#question-section {
     height:300px;
     width: 300px;
     background-color: pink;
@@ -97,11 +97,11 @@ header div {
     text-align: left;
 }
 
-#question-container button {
+#question-section button {
     display: block;
 }
 
-#high-scores-container {
+#player-details-section {
     background-color: lightblue;
 }
 
