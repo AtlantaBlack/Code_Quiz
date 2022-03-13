@@ -57,7 +57,7 @@ header div {
 /* MAIN */
 
 .main-flexbox {
-    border: 1px solid hotpink;
+    border: 1px solid black;
     display: flex;
     flex-flow: column;
     align-items: center;
@@ -66,12 +66,19 @@ header div {
 
 .main-container {
     border: 1px solid greenyellow;
-    flex: 1 0 auto;
+    background-color: green;
+    width: 80%;
+    flex: 0 0 auto;
 }
 
 .content-div {
     border: 1px solid red;
     background-color: palegoldenrod;
+
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    
     padding: 12.5vw;
 }
 
@@ -84,12 +91,18 @@ header div {
 
 #question-container {
     height:300px;
+    width: 300px;
     background-color: pink;
     font-size: 30px;
+    text-align: left;
 }
 
 #question-container button {
     display: block;
+}
+
+#high-scores-container {
+    background-color: lightblue;
 }
 
 

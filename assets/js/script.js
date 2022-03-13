@@ -3,6 +3,12 @@ var timerElement = document.getElementById("timer-span");
 var quizBoxArea = document.getElementById("quiz-box");
 var startQuizButton = document.getElementById("start-quiz-btn");
 
+// set welcome msg and container variables
+var welcomeMessage = document.getElementById("welcome-message");
+var questionContainer = document.getElementById("question-container");
+
+var highScoresContainer = document.getElementById("high-scores-container");
+
 // to use index later, set it to 0 here first
 var index = 0;
 
@@ -31,7 +37,6 @@ var questionsBank = [
     }
 ];
 
-var userChoice = "";
 
 // for player names and scores
 var playerName = localStorage.getItem("playerName");
@@ -39,27 +44,24 @@ var playerScore = localStorage.getItem("playerScore");
 
 
 // timer variables
-var secondsLeft = 4; // set 4 for testing
-
+var secondsLeft;
+var timer;
 
 // functions
 
 
 
 function loadQuestions() {
-    // set welcome msg and container variables
-    var welcomeMessage = document.getElementById("welcome-message");
-    var questionContainer = document.getElementById("question-container");
-
     //clear the question container box
     questionContainer.innerHTML = "";
 
     // hide the welcome message
     welcomeMessage.style.display = "none";
-
+    
     // create title and choice variables for readability
     var questionTitle = questionsBank[index].title;
     var questionChoices = questionsBank[index].choices;
+
 
     // add the question bank title to the question container div
     // append for strings; appendChild for DOM elements
@@ -68,13 +70,15 @@ function loadQuestions() {
     // create a button for each choice
     for (let i = 0; i < questionChoices.length; i++) {
         var userOptionBtn = document.createElement("button");
-        userOptionBtn.textContent = questionChoices[i];
+        userOptionBtn.textContent = (i + 1) + ". " + questionChoices[i];
 
         // add a condition and data attribute to decide if an option is true or false
         if (questionChoices[i] === questionsBank[index].answer) {
             userOptionBtn.setAttribute("data-value", "true");
+            userOptionBtn.setAttribute("data-end", "false");
         } else {
             userOptionBtn.setAttribute("data-value", "false");
+            userOptionBtn.setAttribute("data-end", "false");
         } 
 
         // add the button to the div container
@@ -83,25 +87,55 @@ function loadQuestions() {
         // when user option is clicked, check the answers
         userOptionBtn.addEventListener("click", checkAnswers);
     }
+
+    
 }
 
 // check values of the click event to determine if answer is right or wrong
 function checkAnswers(event) {
     let value = event.currentTarget.dataset.value;
+    let atEnd = event.currentTarget.dataset.end;
 
     if (value === "true") {
+        console.log("at the end? " + atEnd);
         console.log("yay");
+        index++;
+        loadQuestions();
     } else {
-        console.log("noo")
-    }
+        console.log("at the end? " + atEnd);
+        console.log("noo");
+        // deductTime();
+        index++;
+        loadQuestions();
+    } 
+    
+    if (index > questionsBank.length)
+        atEnd = "true";
+        console.log("last at the end? " + atEnd);
+        showHighScores();
+    
 
 }
 
+function showHighScores() {
+    highScoresContainer.innerHTML = "";
 
+    questionContainer.style.display = "none";
+
+    highScoresContainer.append("working");
+    
+}
+
+
+// take off 10 seconds
+function deductTime() {
+    let timePenalty = 10;
+
+}
 
 // timer function
 function startTimer() {
-    let timer = setInterval(function() {
+    timer = setInterval(function() {
         timerElement.textContent = secondsLeft;
         secondsLeft--;
 
