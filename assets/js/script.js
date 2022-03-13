@@ -47,9 +47,9 @@ var playerScore = localStorage.getItem("playerScore");
 // timer variables
 var secondsLeft;
 var timer;
+
+
 // functions
-
-
 
 function loadQuestions() {
     //clear the question container box
@@ -57,12 +57,13 @@ function loadQuestions() {
 
     // hide the welcome message
     welcomeMessage.style.display = "none";
+
     console.log(questionsBank, index);
+
     // create title and choice variables for readability
     var questionTitle = questionsBank[index].title;
     var questionChoices = questionsBank[index].choices;
 
-   
 
     // add the question bank title to the question container div
     // append for strings; appendChild for DOM elements
@@ -97,29 +98,32 @@ function checkAnswers(event) {
     var atEnd = event.currentTarget.dataset.end;
 
    
+    if (index === (questionsBank.length - 1)) {
+        atEnd = "true";
+        // console.log("last at the end? " + atEnd);
+        clearInterval(timer);
+        showHighScores();
+    } 
 
-
-    if (value === "true" && index < questionsBank.length && secondsLeft > 0) {
-        console.log("at the end? " + atEnd);
-        console.log("yay");
+    else if (value === "true" && index < (questionsBank.length - 1)) {
+        // console.log("at the end? " + atEnd);
+        // console.log("yay");
         index++;
-            if (index === questionsBank.length) {
-                atEnd = "true";
-                console.log("last at the end? " + atEnd);
+            if (secondsLeft <= 0) {
+                console.log("seconds left: " + secondsLeft);
                 showHighScores();
-                
             } else {
                 loadQuestions();
             }
 
-    } else if (value === "false" && index < questionsBank.length && secondsLeft > 0) {
-        console.log("at the end? " + atEnd);
-        console.log("noo");
+    } else if (value === "false" && (index < questionsBank.length - 1)) {
+        // console.log("at the end? " + atEnd);
+        // console.log("noo");
         deductTime();
         index++;
-            if (index === questionsBank.length || secondsLeft <= 0) {
-                atEnd = "true";
-                console.log("last at the end? " + atEnd);
+            if (secondsLeft <= 0) {
+                console.log("seconds left: " + secondsLeft);
+                timerElement.textContent = 0 + " s";
                 showHighScores();
             } else {
                 loadQuestions();
@@ -130,7 +134,6 @@ function checkAnswers(event) {
 }
 
 function showHighScores() {
-
     highScoresContainer.innerHTML = "";
 
     welcomeMessage.style.display = "none";
@@ -143,31 +146,31 @@ function showHighScores() {
 
 // take off 10 seconds
 function deductTime() {
-    let timePenalty = 10;
-
-    secondsLeft = secondsLeft - timePenalty;
-
+    secondsLeft = secondsLeft - 10;
     timerElement.textContent = secondsLeft + " s";
 }
 
 // timer function
 function startTimer() {
-    secondsLeft = 60;
-
     let timer = setInterval(function() {
         timerElement.textContent = secondsLeft + " s";
         secondsLeft--;
 
         if (secondsLeft < 0) {
             clearInterval(timer);
+            timerElement.textContent = 0 + " s";
             console.log(secondsLeft + " seconds left & working");
+
+        } else if (index === questionsBank.length - 1) {
+            clearInterval(timer);
         }
+
     }, 1000);
 }
 
 
 function startQuiz () {
-    // secondsLeft = 60;
+    secondsLeft = 30;
     loadQuestions();
     startTimer();
 
