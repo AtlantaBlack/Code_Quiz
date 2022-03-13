@@ -58,8 +58,6 @@ function loadQuestions() {
     // hide the welcome message
     welcomeMessage.style.display = "none";
 
-    console.log(questionsBank, index);
-
     // create title and choice variables for readability
     var questionTitle = questionsBank[index].title;
     var questionChoices = questionsBank[index].choices;
@@ -74,13 +72,13 @@ function loadQuestions() {
         var userOptionBtn = document.createElement("button");
         userOptionBtn.textContent = (i + 1) + ". " + questionChoices[i];
 
-        // add a condition and data attribute to decide if an option is true or false
+        // add a condition and data attribute to decide if an option is true or false, or at the end of the block of questions or not
         if (questionChoices[i] === questionsBank[index].answer) {
             userOptionBtn.setAttribute("data-value", "true");
-            userOptionBtn.setAttribute("data-end", "false");
+            userOptionBtn.setAttribute("data-atEnd", "false");
         } else {
             userOptionBtn.setAttribute("data-value", "false");
-            userOptionBtn.setAttribute("data-end", "false");
+            userOptionBtn.setAttribute("data-atEnd", "false");
         } 
 
         // add the button to the div container
@@ -94,35 +92,30 @@ function loadQuestions() {
 
 // check values of the click event to determine if answer is right or wrong
 function checkAnswers(event) {
+    // grab btn data attributes set in loadQuestions function
     var value = event.currentTarget.dataset.value;
-    var atEnd = event.currentTarget.dataset.end;
+    var isAtEnd = event.currentTarget.dataset.atEnd;
 
-   
+    // first, if index's added total matches the number of the last question's index, then "is at the end (of the question block)" becomes true
     if (index === (questionsBank.length - 1)) {
-        atEnd = "true";
-        // console.log("last at the end? " + atEnd);
+        isAtEnd = "true";
         clearInterval(timer);
         showHighScores();
-    } 
-
-    else if (value === "true" && index < (questionsBank.length - 1)) {
-        // console.log("at the end? " + atEnd);
-        // console.log("yay");
+    
+    // if user chose correct answer AND index under question bank length, add index -- then, IF timer is under 0, go to high score section; otherwise load the next q
+    } else if (value === "true" && index < (questionsBank.length - 1)) {
         index++;
-            if (secondsLeft <= 0) {
-                console.log("seconds left: " + secondsLeft);
+            if (secondsLeft < 0) {
                 showHighScores();
             } else {
                 loadQuestions();
             }
 
+    // if user chose incorrect answer and there are still more questions, apply timer penalty
     } else if (value === "false" && (index < questionsBank.length - 1)) {
-        // console.log("at the end? " + atEnd);
-        // console.log("noo");
         deductTime();
         index++;
-            if (secondsLeft <= 0) {
-                console.log("seconds left: " + secondsLeft);
+            if (secondsLeft < 0) {
                 timerElement.textContent = 0 + " s";
                 showHighScores();
             } else {
@@ -130,7 +123,6 @@ function checkAnswers(event) {
             }
     } 
 
-    
 }
 
 function showHighScores() {
@@ -156,11 +148,12 @@ function startTimer() {
         timerElement.textContent = secondsLeft + " s";
         secondsLeft--;
 
+        // if seconds reach 0, clear timer and set text to 0
         if (secondsLeft < 0) {
             clearInterval(timer);
             timerElement.textContent = 0 + " s";
-            console.log(secondsLeft + " seconds left & working");
-
+        
+        // if index reaches the index of the last question, clear the timer
         } else if (index === questionsBank.length - 1) {
             clearInterval(timer);
         }
