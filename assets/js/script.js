@@ -179,7 +179,14 @@ function setPlayerScore() {
         playerScore: secondsLeft
     }
 
-    localStorage.setItem("Results", JSON.stringify(player));
+    let highscores = JSON.parse(localStorage.getItem("Results"));
+        if (highscores === null) {
+            highscores = [];
+        }
+    
+    highscores.push(player);
+
+    localStorage.setItem("Results", JSON.stringify(highscores));
 
 }
 
@@ -188,7 +195,7 @@ function retrievePlayerScore() {
     // variable, for loop, append
     var data = JSON.parse(localStorage.getItem("Results"));
     
-
+    //change the second line to a for or for each loop to extract data out of the new Results array
     var showData = document.createElement("li");
     showData.textContent = data.playerInitials + " " + data.playerScore;
 
@@ -207,9 +214,11 @@ function showHighScores() {
     highScoresSection.style.display = "block";
 
     var hssTitle = document.createElement("h2");
-    hssTitle.textContent = "High Scores";
+    hssTitle.textContent = "Highest Score";
     
+
     highScoresSection.appendChild(hssTitle);
+
 
     retrievePlayerScore();
 
