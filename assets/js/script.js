@@ -196,7 +196,7 @@ function setPlayerScore() {
 
 function retrievePlayerScore() {
     // for retrieving the player scores
-    JSON.parse(localStorage.getItem("playerResults"));
+    JSON.parse(localStorage.getItem("Player Results"));
 
 }
 
@@ -216,7 +216,7 @@ function showHighScores() {
 
     retrievePlayerScore();
 
-    
+
 
 }
 
