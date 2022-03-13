@@ -206,11 +206,11 @@ function retrievePlayerScore() {
 
     for (i = 0; i < data.length; i++) {
         var showData = document.createElement("div");
-        showData.textContent = data[i];
+        showData.textContent = "Name: " + data[i].playerInitials + " Score " + data[i].playerScore;
+
+        highScoresSection.appendChild(showData);
     }
 
-
-    highScoresSection.appendChild(showData);
 
 }
 
