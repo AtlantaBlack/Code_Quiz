@@ -45,7 +45,6 @@ var playerScore = localStorage.getItem("playerScore");
 
 // timer variables
 var secondsLeft;
-var timer;
 
 // functions
 
@@ -62,6 +61,7 @@ function loadQuestions() {
     var questionTitle = questionsBank[index].title;
     var questionChoices = questionsBank[index].choices;
 
+   
 
     // add the question bank title to the question container div
     // append for strings; appendChild for DOM elements
@@ -92,14 +92,8 @@ function loadQuestions() {
 
 // check values of the click event to determine if answer is right or wrong
 function checkAnswers(event) {
-    let value = event.currentTarget.dataset.value;
-    let atEnd = event.currentTarget.dataset.end;
-
-    if (index > questionsBank.length) {
-        atEnd = "true";
-        console.log("last at the end? " + atEnd);
-        showHighScores();
-    }
+    var value = event.currentTarget.dataset.value;
+    var atEnd = event.currentTarget.dataset.end;
 
     if (value === "true" && index < questionsBank.length) {
         console.log("at the end? " + atEnd);
@@ -114,13 +108,19 @@ function checkAnswers(event) {
         loadQuestions();
     }
 
-    
+    if (index === questionsBank.length) {
+        atEnd = "true";
+        console.log("last at the end? " + atEnd);
+        showHighScores();
+    }
 
+    
 }
 
 function showHighScores() {
     highScoresContainer.innerHTML = "";
 
+    welcomeMessage.style.display = "none";
     questionContainer.style.display = "none";
 
     highScoresContainer.append("working");
@@ -132,12 +132,14 @@ function showHighScores() {
 function deductTime() {
     let timePenalty = 10;
 
+    secondsLeft = secondsLeft - timePenalty;
 }
 
 // timer function
 function startTimer() {
-    timer = setInterval(function() {
-        timerElement.textContent = secondsLeft;
+
+    let timer = setInterval(function() {
+        timerElement.textContent = secondsLeft + " s";
         secondsLeft--;
 
         if (secondsLeft < 0) {
@@ -145,6 +147,8 @@ function startTimer() {
             console.log(secondsLeft + " seconds left & working");
         }
     }, 1000);
+
+
 }
 
 
