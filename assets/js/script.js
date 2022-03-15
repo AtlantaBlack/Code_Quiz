@@ -2,6 +2,7 @@
 
 var linkToHighScores = document.getElementById("highscores");
 var timerElement = document.getElementById("timer-span");
+var resetQuizButton = document.getElementById("reset-quiz-button");
 var quizBoxArea = document.getElementById("quiz-box");
 var startQuizButton = document.getElementById("start-quiz-button");
 
@@ -22,44 +23,37 @@ var index = 0;
 // questions and answers:
 // dummy questions/answers for testing first
 var questionsBank = [
-    {
-        // javascript - primitive types
+    {   // javascript - primitive types
         title: "Which of the following are primitive data types?",
         choices: ["Strings", "Number", "Undefined", "All of the above"],
         answer: "All of the above"
     },
-    {
-        // javascript - logical comparison operators
+    {   // javascript - logical comparison operators
         title: "What does the strict equality comparison operator (===) compare?",
         choices: ["Value only", "Value and type", "Type only", "Numbers only"],
         answer: "Value and type"
     },
-    {
-        // javascript - arrays
+    {   // javascript - arrays
         title: "To store groups of data in a single variable, we use ____?",
         choices: ["Arrays", "Variables", "Booleans", "Strings"],
         answer: "Arrays"
     },
-    {
-        // javascript - variables
+    {   // javascript - variables
         title: "How are variables assigned?",
         choices: ["let", "var", "const", "All of the above"],
         answer: "Arrays"
     },
-    {
-        // javascript - conditional statements
+    {   // javascript - conditional statements
         title: "What are if/else statements known as?",
         choices: ["Objects", "Primitive data types", "Conditional statements", "Logical comparison operators"],
         answer: "Conditional statements"
     },
-    {
-        // javascript - booleans
+    {   // javascript - booleans
         title: "What values do Booleans return?",
         choices: ["Right and Wrong", "True and Wrong", "False and True", "Right and False"],
         answer: "False and True"
     },
-    {
-        // javascript - iteration methods
+    {   // javascript - iteration methods
         title: "forEach() is a type of ____ method for arrays.",
         choices: ["Mutator", "Iteration", "Accessor", "Concatenation"],
         answer: "Iteration"
@@ -89,31 +83,25 @@ function showSteps(name) {
             console.log("showing " + key)
         } else {
             selected.classList.add("hide");
+            selected.classList.remove("show");
             console.log("hiding " + key);
         }
     }
 }
 
-function displayCorrect() {
-    messageCorrect.classList.remove("hide");
-    messageIncorrect.classList.add("hide");
-}
-
-function displayIncorrect() {
-    messageCorrect.classList.add("hide");
-    messageIncorrect.classList.remove("hide");
-}
-
-linkToHighScores.addEventListener("click", viewTheScores);
 
 function viewTheScores() {
     showHighScores();
 }
 
-welcomeMessage.classList.remove("hide");
-answerCheckArea.classList.add("hide");
 
-// add event listener:
+
+showSteps("welcome");
+
+linkToHighScores.addEventListener("click", viewTheScores);
+
+resetQuizButton.addEventListener("click", returnToStart);
+
 startQuizButton.addEventListener("click", startQuiz);
 
 
@@ -178,6 +166,7 @@ function loadQuestions() {
     // create a button for each choice
     for (let i = 0; i < questionChoices.length; i++) {
         var userOptionBtn = document.createElement("button");
+        userOptionBtn.setAttribute("id", "user-option-button");
         userOptionBtn.textContent = (i + 1) + ". " + questionChoices[i];
 
         // add a condition and data attribute to decide if an option is true or false, or at the end of the block of questions or not
@@ -200,6 +189,8 @@ function checkAnswers(event) {
     // grab btn data attributes set in loadQuestions function
     var value = event.currentTarget.dataset.value;
     answerCheckArea.classList.remove("hide");
+
+    console.log(answerCheckArea);
 
     if (value === "true") {
         displayCorrect();
@@ -225,7 +216,16 @@ function checkAnswers(event) {
             loadQuestions();
         }
     }
+}
 
+function displayCorrect() {
+    messageCorrect.classList.remove("hide");
+    messageIncorrect.classList.add("hide");
+}
+
+function displayIncorrect() {
+    messageCorrect.classList.add("hide");
+    messageIncorrect.classList.remove("hide");
 }
 
 
@@ -239,8 +239,12 @@ function addPlayerDetails() {
     pdsTitle.append("The quiz has ended!");
     playerDetailsSection.appendChild(pdsTitle);
 
+    var finalScoreText = document.createElement("p");
+    finalScoreText.textContent = "Your final score is " + secondsLeft + "!";
+    playerDetailsSection.appendChild(finalScoreText);
+
     var flavourText = document.createElement("p");
-    flavourText.textContent = "Your final score is " + secondsLeft;
+    flavourText.textContent = "Well done! We hope you enjoyed the quiz and learnt a thing or two about Javascript.";
     playerDetailsSection.appendChild(flavourText);
 
     // create the user form and set its attributes
@@ -329,12 +333,6 @@ function showHighScores() {
 
     showSteps("scoresection");
 
-    // welcomeMessage.classList.add("hide");
-    // questionSection.classList.add("hide");
-    // answerCheckArea.classList.add("hide");
-    // playerDetailsSection.classList.add("hide");
-    // highScoresSection.classList.remove("hide");
-
     var hssTitle = document.createElement("h2");
     hssTitle.textContent = "High Scores";
 
@@ -366,9 +364,7 @@ function showHighScores() {
 
 function returnToStart() {
     showSteps("welcome");
-
     index = 0;
-    // resetTimer();
 }
 
 
@@ -377,6 +373,3 @@ function clearTheScores() {
     window.localStorage.clear();
     showHighScores();
 }
-
-
-// figure out why the return to main screen button is hiding welcome message
