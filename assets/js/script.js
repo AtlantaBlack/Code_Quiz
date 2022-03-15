@@ -20,7 +20,7 @@ var index = 0;
 // dummy questions/answers for testing first
 var questionsBank = [
     {
-        title: "jsdlfkjs",
+        title: "pick javascript",
         choices: ["a", "b", "c", "javascript"],
         answer: "javascript"
     },
@@ -103,6 +103,7 @@ function loadQuestions() {
     // hide the welcome message, player details box, highscores box
     welcomeMessage.classList.add("hide");
     questionSection.classList.remove("hide");
+    answerCheckArea.classList.remove("hide");
     playerDetailsSection.classList.add("hide");
     highScoresSection.classList.add("hide");
 
@@ -122,7 +123,7 @@ function loadQuestions() {
         // add a condition and data attribute to decide if an option is true or false, or at the end of the block of questions or not
         if (questionChoices[i] === questionsBank[index].answer) {
             userOptionBtn.setAttribute("data-value", "true");
-
+        
       
 
         } else {
@@ -177,17 +178,23 @@ function checkAnswers(event) {
 }
 
 function displayCorrectMessage () {
+ 
+
     var displayCorrect = document.createElement("p");
         displayCorrect.setAttribute("id", "notification-correct");
         displayCorrect.textContent = "Correct!"
 
     var count = 2;
-    var displayingTime = setInterval(function () {
+    var messageDisplay = setInterval(function () {
+        
         count--;
-
-
         answerCheckArea.appendChild(displayCorrect);
-    });
+
+        if (count === 0) {
+            clearInterval(messageDisplay);
+  
+        }
+    }, 1000);
 
 }
 
@@ -205,6 +212,7 @@ function addPlayerDetails() {
 
     welcomeMessage.classList.add("hide");
     questionSection.classList.add("hide");
+    // answerCheckArea.classList.add("hide");
     playerDetailsSection.classList.remove("hide");
     highScoresSection.classList.add("hide");
 
