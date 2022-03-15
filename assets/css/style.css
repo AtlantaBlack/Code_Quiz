@@ -1,25 +1,48 @@
+:root {
+    --sea-blue: #0081a7;
+    --light-turquoise: #00afb9;
+    --cream: #fdfcdc;
+    --peach: #fed9b7;
+    --coral: #f07167;
+
+    --off-white: rgb(255, 252, 240);
+}
+
+
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    box-sizing: border-box;
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
 }
 
 
 /* BODY */
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 18px;
+    line-height: auto;
+    background-color: var(--cream);
 }
 
+h1 { font-size: 2.5rem; }
+
 p {
-    line-height: 1.5rem;
+    line-height: 1.6rem;
 }
 
 .hide {
     display: none;
 }
+
+button {
+    -webkit-appearance:none;
+    appearance:none;
+
+    background-color: var(--sea-blue);
+}
+
 
 
 /* HEADER */
@@ -49,7 +72,17 @@ header div {
 .timer-div {
     border: 1px solid blue;
     background-color: yellow;
-    margin: 50px 30px 30px;
+    display:flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+
+    height: 8rem;
+    width: 8rem;
+
+    margin: 0.5rem;
+
+    border-radius: 50%;
 }
 
 #timer-span {
@@ -64,6 +97,7 @@ header div {
     border: 1px solid black;
     display: flex;
     flex-flow: column;
+    justify-content: center;
     align-items: center;
     margin-bottom: 15vh;
 }
@@ -77,7 +111,7 @@ header div {
 
 .content-div {
     border: 1px solid red;
-    background-color: palegoldenrod;
+    background-color: var(--off-white);
 
     display: flex;
     flex-flow: column;

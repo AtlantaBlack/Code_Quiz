@@ -23,36 +23,74 @@ var index = 0;
 // dummy questions/answers for testing first
 var questionsBank = [
     {
-        title: "pick javascript",
-        choices: ["a", "b", "c", "javascript"],
-        answer: "javascript"
+        // javascript lesson 5 - primitive types
+        title: "Which of the following are primitive data types?",
+        choices: ["Strings", "Number", "Undefined", "All of the above"],
+        answer: "All of the above"
     },
     {
-        title: "pick boolean",
-        choices: ["a", "b", "c", "boolean"],
-        answer: "boolean"
+        // javascript lesson 7 - logical comparison operators
+        title: "What does the strict equality comparison operator (===) compare?",
+        choices: ["Value only", "Value and type", "Type only", "Numbers only"],
+        answer: "Value and type"
     },
     {
-        title: "pick string",
-        choices: ["a", "b", "c", "string"],
-        answer: "string"
+        // javascript lesson 11 - arrays
+        title: "To store groups of data in a single variable, we use ___?",
+        choices: ["Arrays", "Variables", "Booleans", "Strings"],
+        answer: "Arrays"
     },
     {
-        title: "pick array",
-        choices: ["a", "b", "c", "array"],
-        answer: "array"
+        // javascript lesson 1 - variables
+        title: "5. How are variables assigned?",
+        choices: ["let", "var", "const", "All of the above"],
+        answer: "Arrays"
+    },
+    {
+        // javascript lesson 9 - conditional statements
+        title: "6. What are if/else statements known as?",
+        choices: ["Objects", "Primitive data types", "Conditional statements", "Logical comparison operators"],
+        answer: "Conditional statements"
     }
 ];
 
 // timer variables
-var secondsLeft = 60;
+var secondsLeft;
+
+var steps = {
+    "welcome": welcomeMessage,
+    "quizsection": questionSection,
+    // "answercheck": answerCheckArea,
+    "playerdetails": playerDetailsSection,
+    "scoresection": highScoresSection
+}
 
 
-welcomeMessage.classList.remove("hide");
-messageCorrect.classList.add("hide");
-messageIncorrect.classList.add("hide");
 
 // FUNCTIONS GO HERE
+
+function showSteps(name) {
+    for (key in steps) {
+        var selected = steps[key];
+        if (key === name) {
+            selected.classList.remove("hide");
+            console.log("showing " + key)
+        } else {
+            selected.classList.add("hide");
+            console.log("hiding " + key);
+        }
+    }
+}
+
+function displayCorrect() {
+    messageCorrect.classList.remove("hide");
+    messageIncorrect.classList.add("hide");
+}
+
+function displayIncorrect() {
+    messageCorrect.classList.add("hide");
+    messageIncorrect.classList.remove("hide");
+}
 
 linkToHighScores.addEventListener("click", viewTheScores);
 
@@ -60,11 +98,16 @@ function viewTheScores() {
     showHighScores();
 }
 
+welcomeMessage.classList.remove("hide");
+answerCheckArea.classList.add("hide");
+
 // add event listener:
 startQuizButton.addEventListener("click", startQuiz);
 
 
-function startQuiz () {
+function startQuiz() {
+    resetTimer();
+    timerElement.textContent = secondsLeft;
     startTimer();
     loadQuestions();
 }
@@ -76,22 +119,24 @@ function resetTimer() {
 }
 
 function startTimer() {
-    var timer = setInterval(function() {
+    var timer = setInterval(function () {
         console.log(secondsLeft);
-        
-        timerElement.textContent = secondsLeft;
         secondsLeft--;
+    
+        if (secondsLeft >= 0){
+            timerElement.textContent = secondsLeft;
+        }
 
         // if seconds reach 0, clear timer and set text to 0
-        if (secondsLeft < 0) {
+        if (secondsLeft <= 0) {
             clearInterval(timer);
             secondsLeft = 0;
             addPlayerDetails();
-        
-        // if index reaches the index of the last question in questionsBank array, clear the timer
+
+            // if index reaches the index of the last question in questionsBank array, clear the timer
         } else if (index === questionsBank.length - 1) {
             clearInterval(timer);
-        }
+        } 
 
     }, 1000);
 }
@@ -103,15 +148,12 @@ function deductTime() {
 
 
 function loadQuestions() {
+
+    showSteps("quizsection");
+
     //clear the question container box
     questionSection.innerHTML = "";
 
-    // hide the welcome message, player details box, highscores box
-    welcomeMessage.classList.add("hide");
-    questionSection.classList.remove("hide");
-    answerCheckArea.classList.remove("hide");
-    playerDetailsSection.classList.add("hide");
-    highScoresSection.classList.add("hide");
 
     // create title and choice variables for readability
     var questionTitle = questionsBank[index].title;
@@ -131,7 +173,7 @@ function loadQuestions() {
             userOptionBtn.setAttribute("data-value", "true");
         } else {
             userOptionBtn.setAttribute("data-value", "false");
-        } 
+        }
 
         // add the button to the div container
         questionSection.appendChild(userOptionBtn);
@@ -145,93 +187,78 @@ function loadQuestions() {
 function checkAnswers(event) {
     // grab btn data attributes set in loadQuestions function
     var value = event.currentTarget.dataset.value;
+    answerCheckArea.classList.remove("hide");
 
     if (value === "true") {
         displayCorrect();
         index++;
-            if (index === questionsBank.length) {
-                addPlayerDetails();
-            } else if (secondsLeft < 0) {
-                secondsLeft = 0;
-                addPlayerDetails();
-            } else {
-                loadQuestions();
-            }
+        if (index === questionsBank.length) {
+            addPlayerDetails();
+        } else if (secondsLeft <= 0) {
+            // secondsLeft = 0;
+            addPlayerDetails();
+        } else {
+            loadQuestions();
         }
-
-    else if (value === "false") {
+    } else if (value === "false") {
         displayIncorrect();
         deductTime();
         index++;
-            if (index === questionsBank.length) {
-                addPlayerDetails();
-            } else if (secondsLeft < 0) {
-                secondsLeft = 0;
-                addPlayerDetails();
-            } else {
-                loadQuestions();
-            }
-    } 
+        if (index === questionsBank.length) {
+            addPlayerDetails();
+        } else if (secondsLeft <= 0) {
+            // secondsLeft = 0;
+            addPlayerDetails();
+        } else {
+            loadQuestions();
+        }
+    }
 
-}
-
-function displayCorrect() {
-    messageCorrect.classList.remove("hide");
-    messageIncorrect.classList.add("hide");
-}
-
-function displayIncorrect() {
-    messageCorrect.classList.add("hide");
-    messageIncorrect.classList.remove("hide");
 }
 
 
 function addPlayerDetails() {
     playerDetailsSection.innerHTML = "";
+    timerElement.textContent = secondsLeft;
 
-    welcomeMessage.classList.add("hide");
-    questionSection.classList.add("hide");
-    answerCheckArea.classList.add("hide");
-    playerDetailsSection.classList.remove("hide");
-    highScoresSection.classList.add("hide");
-
+    showSteps("playerdetails");
 
     var pdsTitle = document.createElement("h2");
-        pdsTitle.append("The quiz has ended!");
-        playerDetailsSection.appendChild(pdsTitle);
+    pdsTitle.append("The quiz has ended!");
+    playerDetailsSection.appendChild(pdsTitle);
 
     var flavourText = document.createElement("p");
-        flavourText.textContent = "Your final score is " + secondsLeft;
-        playerDetailsSection.appendChild(flavourText);
+    flavourText.textContent = "Your final score is " + secondsLeft;
+    playerDetailsSection.appendChild(flavourText);
 
     // create the user form and set its attributes
     var userForm = document.createElement("form");
-        userForm.setAttribute("method", "post");
-    
+    userForm.setAttribute("method", "post");
+
     // create the form label and set its text content
     var formLabel = document.createElement("label");
-        formLabel.textContent = "Your initials: ";
+    formLabel.textContent = "Your initials: ";
 
     // create the form input and set its attributes
     var formInput = document.createElement("input");
-        formInput.setAttribute("type", "text");
-        formInput.setAttribute("id", "player-initials-input");
+    formInput.setAttribute("type", "text");
+    formInput.setAttribute("id", "player-initials-input");
 
     // create button for the form
     var submitBtn = document.createElement("button");
-        submitBtn.textContent = "Submit";
-        submitBtn.setAttribute("type", "submit");
-        submitBtn.setAttribute("id", "submit");
+    submitBtn.textContent = "Submit";
+    submitBtn.setAttribute("type", "submit");
+    submitBtn.setAttribute("id", "submit");
 
     // append label, input, button to form; append form to DOM
     playerDetailsSection.appendChild(userForm);
-        userForm.appendChild(formLabel);
-        userForm.appendChild(formInput);
-        userForm.appendChild(submitBtn);
+    userForm.appendChild(formLabel);
+    userForm.appendChild(formInput);
+    userForm.appendChild(submitBtn);
 
 
     // add event listener to set the score
-    userForm.addEventListener("submit", function(event) {
+    userForm.addEventListener("submit", function (event) {
         event.preventDefault();
 
         setPlayerScore();
@@ -251,10 +278,10 @@ function setPlayerScore() {
     }
 
     let highscores = JSON.parse(localStorage.getItem("Results"));
-        if (highscores === null) {
-            highscores = [];
-        }
-    
+    if (highscores === null) {
+        highscores = [];
+    }
+
     highscores.push(player);
 
     localStorage.setItem("Results", JSON.stringify(highscores));
@@ -269,14 +296,14 @@ function retrievePlayerScore() {
     var dataList = document.createElement("ul");
     dataList.style.listStyleType = "none";
     highScoresSection.appendChild(dataList);
-  
+
     if (data) {
         for (i = 0; i < data.length; i++) {
-        var dataListItems = document.createElement("li");
+            var dataListItems = document.createElement("li");
             dataListItems.textContent = "Name: " + data[i].playerInitials + " Score: " + data[i].playerScore;
 
             dataList.appendChild(dataListItems);
-            }
+        }
     } else {
         var emptyDataList = document.createElement("li");
         emptyDataList.textContent = "Name: --" + " " + "Score: --";
@@ -288,11 +315,13 @@ function retrievePlayerScore() {
 function showHighScores() {
     highScoresSection.innerHTML = "";
 
-    welcomeMessage.classList.add("hide");
-    questionSection.classList.add("hide");
-    answerCheckArea.classList.add("hide");
-    playerDetailsSection.classList.add("hide");
-    highScoresSection.classList.remove("hide");
+    showSteps("scoresection");
+
+    // welcomeMessage.classList.add("hide");
+    // questionSection.classList.add("hide");
+    // answerCheckArea.classList.add("hide");
+    // playerDetailsSection.classList.add("hide");
+    // highScoresSection.classList.remove("hide");
 
     var hssTitle = document.createElement("h2");
     hssTitle.textContent = "High Scores";
@@ -303,9 +332,9 @@ function showHighScores() {
 
     // create button for returning to start of quiz
     var goBackBtn = document.createElement("button");
-        goBackBtn.textContent = "Return To Start";
-        goBackBtn.setAttribute("type", "button");
-        goBackBtn.setAttribute("id", "back-to-main");
+    goBackBtn.textContent = "Return To Start";
+    goBackBtn.setAttribute("type", "button");
+    goBackBtn.setAttribute("id", "back-to-main");
 
     highScoresSection.appendChild(goBackBtn);
 
@@ -313,9 +342,9 @@ function showHighScores() {
 
     // creating button to clear the scores
     var clearScoresBtn = document.createElement("button");
-        clearScoresBtn.textContent = "Clear Scores";
-        clearScoresBtn.setAttribute("type", "button");
-        clearScoresBtn.setAttribute("id", "clear-scores");
+    clearScoresBtn.textContent = "Clear Scores";
+    clearScoresBtn.setAttribute("type", "button");
+    clearScoresBtn.setAttribute("id", "clear-scores");
 
     highScoresSection.appendChild(clearScoresBtn);
 
@@ -324,14 +353,10 @@ function showHighScores() {
 
 
 function returnToStart() {
-    welcomeMessage.classList.remove("hide");
-    questionSection.classList.add("hide");
-    answerCheckArea.classList.add("hide");
-    playerDetailsSection.classList.add("hide");
-    highScoresSection.classList.add("hide");
+    showSteps("welcome");
 
     index = 0;
-    resetTimer();
+    // resetTimer();
 }
 
 
@@ -342,3 +367,4 @@ function clearTheScores() {
 }
 
 
+// figure out why the return to main screen button is hiding welcome message
