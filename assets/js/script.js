@@ -15,11 +15,6 @@ var highScoresSection = document.getElementById("high-scores-section");
 // to use index later, set it to 0 here first
 var index = 0;
 
-
-// timer variables
-var secondsLeft;
-
-
 // questions and answers:
 // dummy questions/answers for testing first
 var questionsBank = [
@@ -45,26 +40,31 @@ var questionsBank = [
     }
 ];
 
+// timer variables
+var secondsLeft = 15;
+
 
 // functions
 
 // add event listener:
 startQuizButton.addEventListener("click", startQuiz);
 
-
 function startQuiz () {
-    secondsLeft = 20;
     startTimer();
     loadQuestions();
 }
 
-// timer function
-function startTimer() {
 
-    // to prevent a delay in the timer: set a function outside of setInterval
-    
+// timer function
+function resetTimer() {
+    secondsLeft = 15;
+}
+
+
+function startTimer() {
     var timer = setInterval(function() {
         console.log(secondsLeft);
+        
         timerElement.textContent = secondsLeft;
         secondsLeft--;
 
@@ -72,10 +72,9 @@ function startTimer() {
         if (secondsLeft < 0) {
             clearInterval(timer);
             secondsLeft = 0;
-            timerElement.textContent = 0;
             addPlayerDetails();
         
-        // if index reaches the index of the last question, clear the timer
+        // if index reaches the index of the last question in questionsBank array, clear the timer
         } else if (index === questionsBank.length - 1) {
             clearInterval(timer);
             addPlayerDetails();
@@ -97,15 +96,15 @@ function loadQuestions() {
     // hide the welcome message, player details box, highscores box
     welcomeMessage.classList.add("hide");
     questionSection.classList.remove("hide");
-    playerDetailsSection.style.display = "none";
-    highScoresSection.style.display="none";
+    playerDetailsSection.classList.add("hide");
+    highScoresSection.classList.add("hide");
 
     // create title and choice variables for readability
     var questionTitle = questionsBank[index].title;
     var questionChoices = questionsBank[index].choices;
 
     // add the question bank title to the question container div
-    // append for strings; appendChild for DOM elements
+    // NB: append for strings; appendChild for DOM elements
     questionSection.append(questionTitle);
 
     // create a button for each choice
@@ -116,10 +115,8 @@ function loadQuestions() {
         // add a condition and data attribute to decide if an option is true or false, or at the end of the block of questions or not
         if (questionChoices[i] === questionsBank[index].answer) {
             userOptionBtn.setAttribute("data-value", "true");
-       
         } else {
             userOptionBtn.setAttribute("data-value", "false");
-       
         } 
 
         // add the button to the div container
@@ -134,11 +131,8 @@ function loadQuestions() {
 function checkAnswers(event) {
     // grab btn data attributes set in loadQuestions function
     var value = event.currentTarget.dataset.value;
-  
 
-    // first, if index's added total matches the number of the last question's index, then "is at the end (of the question block)" becomes true
     if (index === (questionsBank.length - 1)) {
-        clearInterval(timer);
         addPlayerDetails();
     }
 
@@ -159,7 +153,6 @@ function checkAnswers(event) {
         index++;
             if (secondsLeft < 0) {
                 secondsLeft = 0;
-                timerElement.textContent = 0;
                 addPlayerDetails();
             } else {
                 loadQuestions();
@@ -171,10 +164,10 @@ function checkAnswers(event) {
 function addPlayerDetails() {
     playerDetailsSection.innerHTML = "";
 
-    // welcomeMessage.style.display = "none";
-    questionSection.style.display = "none";
-    playerDetailsSection.style.display = "block";
-    // highScoresSection.style.display="none";
+    welcomeMessage.classList.add("hide");
+    questionSection.classList.add("hide");
+    playerDetailsSection.classList.remove("hide");
+    highScoresSection.classList.add("hide");
 
 
     var pdsTitle = document.createElement("h2");
@@ -238,7 +231,6 @@ function setPlayerScore() {
     highscores.push(player);
 
     localStorage.setItem("Results", JSON.stringify(highscores));
-
 }
 
 
@@ -246,12 +238,6 @@ function retrievePlayerScore() {
     var data = JSON.parse(localStorage.getItem("Results"));
 
     console.log(data);
-    
-    // change the second line to a for- or for-each loop to extract data out of the new Results array
-    // data.forEach(function (item, index) {
-    //     var showData = document.createElement("li");
-    //     showData.textContent = item[i];
-    // });
 
     var dataList = document.createElement("ul");
     dataList.style.listStyleType = "none";
@@ -269,17 +255,16 @@ function retrievePlayerScore() {
         emptyDataList.textContent = "Name: --" + " " + "Score: --";
         dataList.appendChild(emptyDataList);
     }
-
 }
 
 
 function showHighScores() {
     highScoresSection.innerHTML = "";
 
-    welcomeMessage.style.display = "none";
-    questionSection.style.display = "none";
-    playerDetailsSection.style.display = "none";
-    highScoresSection.style.display = "block";
+    welcomeMessage.classList.add("hide");
+    questionSection.classList.add("hide");
+    playerDetailsSection.classList.add("hide");
+    highScoresSection.classList.remove("hide");
 
     var hssTitle = document.createElement("h2");
     hssTitle.textContent = "High Scores";
@@ -298,7 +283,6 @@ function showHighScores() {
 
     highScoresSection.appendChild(goBackBtn);
 
-
     goBackBtn.addEventListener("click", returnToStart);
 
 
@@ -312,12 +296,17 @@ function showHighScores() {
 
 
     clearScoresBtn.addEventListener("click", clearTheScores);
-
-
 }
 
-function returnToStart(event) {
 
+function returnToStart() {
+    welcomeMessage.classList.remove("hide");
+    questionSection.classList.add("hide");
+    playerDetailsSection.classList.add("hide");
+    highScoresSection.classList.add("hide");
+
+    index = 0;
+    resetTimer();
 }
 
 // function to clear the high scores
