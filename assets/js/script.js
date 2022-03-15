@@ -3,7 +3,7 @@
 var linkToHighScores = document.getElementById("highscores");
 var timerElement = document.getElementById("timer-span");
 var quizBoxArea = document.getElementById("quiz-box");
-var startQuizButton = document.getElementById("start-quiz-btn");
+var startQuizButton = document.getElementById("start-quiz-button");
 
 // set welcome msg and container variables
 var welcomeMessage = document.getElementById("welcome-message");
@@ -46,17 +46,48 @@ var questionsBank = [
 ];
 
 
-// screen index
-var screenIndex = [ 
-    {welcomeMessage}, 
-    {questionSection},
-    {playerDetailsSection},
-    {highScoresSection}
-]
-
-
-
 // functions
+
+// add event listener:
+startQuizButton.addEventListener("click", startQuiz);
+
+
+function startQuiz () {
+    secondsLeft = 20;
+    startTimer();
+    loadQuestions();
+}
+
+// timer function
+function startTimer() {
+
+    // to prevent a delay in the timer: set a function outside of setInterval
+    
+    var timer = setInterval(function() {
+        console.log(secondsLeft);
+        timerElement.textContent = secondsLeft;
+        secondsLeft--;
+
+        // if seconds reach 0, clear timer and set text to 0
+        if (secondsLeft < 0) {
+            clearInterval(timer);
+            secondsLeft = 0;
+            timerElement.textContent = 0;
+            addPlayerDetails();
+        
+        // if index reaches the index of the last question, clear the timer
+        } else if (index === questionsBank.length - 1) {
+            clearInterval(timer);
+            addPlayerDetails();
+        }
+
+    }, 1000);
+}
+
+// take off 10 seconds
+function deductTime() {
+    secondsLeft = secondsLeft - 10;
+}
 
 
 function loadQuestions() {
@@ -138,7 +169,6 @@ function checkAnswers(event) {
 
 
 function addPlayerDetails() {
-
     playerDetailsSection.innerHTML = "";
 
     // welcomeMessage.style.display = "none";
@@ -287,7 +317,7 @@ function showHighScores() {
 }
 
 function returnToStart(event) {
-    
+
 }
 
 // function to clear the high scores
@@ -296,55 +326,3 @@ function clearTheScores() {
     showHighScores();
 }
 
-
-// timer function
-function startTimer() {
-    // to prevent a delay in the timer: set a function outside of setInterval
-    
-    var timer = setInterval(function() {
-        console.log(secondsLeft);
-        timerElement.textContent = secondsLeft;
-        secondsLeft--;
-
-        // if seconds reach 0, clear timer and set text to 0
-        if (secondsLeft < 0) {
-            clearInterval(timer);
-            secondsLeft = 0;
-            timerElement.textContent = 0;
-            addPlayerDetails();
-        
-        // if index reaches the index of the last question, clear the timer
-        } else if (index === questionsBank.length - 1) {
-            clearInterval(timer);
-            addPlayerDetails();
-        }
-
-    }, 1000);
-}
-
-// take off 10 seconds
-function deductTime() {
-    secondsLeft = secondsLeft - 10;
-}
-
-
-function startQuiz () {
-    secondsLeft = 20;
-    startTimer();
-    loadQuestions();
-
-    //make a next button
-    // var nextButton = document.createElement("button");
-    // nextButton.textContent = "next";
-    // nextButton.addEventListener("click", () => {
-    //     if (index < questionsBank.length) {
-    //         index++;
-    //         loadQuestions();
-    //         }
-    //     })
-    // quizBoxArea.appendChild(nextButton);
-}
-
-
-// add event listeners:
-startQuizButton.addEventListener("click", startQuiz);
