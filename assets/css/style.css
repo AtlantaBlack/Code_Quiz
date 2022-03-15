@@ -17,6 +17,10 @@ p {
     line-height: 1.5rem;
 }
 
+.hide {
+    display: none;
+}
+
 
 /* HEADER */
 
@@ -89,10 +93,16 @@ header div {
     text-align: center;
 }
 
+
+#welcome-message {
+    background-color: coral;
+}
+
+
 #question-section {
+    background-color: pink;
     height:300px;
     width: 300px;
-    background-color: pink;
     font-size: 30px;
     text-align: left;
 }
@@ -100,6 +110,7 @@ header div {
 #question-section button {
     display: block;
 }
+
 
 #player-details-section {
     background-color: lightblue;
@@ -109,6 +120,9 @@ header div {
     border: 1px solid red;
 }
 
+#high-scores-section {
+    background-color: limegreen;
+}
 
 /* FOOTER */
 

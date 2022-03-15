@@ -1,6 +1,6 @@
 
 
-// var highScoresLink = document.getElementById("highscores");
+var linkToHighScores = document.getElementById("highscores");
 var timerElement = document.getElementById("timer-span");
 var quizBoxArea = document.getElementById("quiz-box");
 var startQuizButton = document.getElementById("start-quiz-btn");
@@ -18,13 +18,13 @@ var index = 0;
 
 // timer variables
 var secondsLeft;
-var timer;
+
 
 // questions and answers:
 // dummy questions/answers for testing first
 var questionsBank = [
     {
-        title: "pick javascript",
+        title: "jsdlfkjs",
         choices: ["a", "b", "c", "javascript"],
         answer: "javascript"
     },
@@ -46,23 +46,32 @@ var questionsBank = [
 ];
 
 
+// screen index
+var screenIndex = [ 
+    {welcomeMessage}, 
+    {questionSection},
+    {playerDetailsSection},
+    {highScoresSection}
+]
+
+
 
 // functions
+
 
 function loadQuestions() {
     //clear the question container box
     questionSection.innerHTML = "";
 
     // hide the welcome message, player details box, highscores box
-    welcomeMessage.style.display = "none";
-    questionSection.style.display = "block";
+    welcomeMessage.classList.add("hide");
+    questionSection.classList.remove("hide");
     playerDetailsSection.style.display = "none";
     highScoresSection.style.display="none";
 
     // create title and choice variables for readability
     var questionTitle = questionsBank[index].title;
     var questionChoices = questionsBank[index].choices;
-
 
     // add the question bank title to the question container div
     // append for strings; appendChild for DOM elements
@@ -76,10 +85,10 @@ function loadQuestions() {
         // add a condition and data attribute to decide if an option is true or false, or at the end of the block of questions or not
         if (questionChoices[i] === questionsBank[index].answer) {
             userOptionBtn.setAttribute("data-value", "true");
-            userOptionBtn.setAttribute("data-end", "false");
+       
         } else {
             userOptionBtn.setAttribute("data-value", "false");
-            userOptionBtn.setAttribute("data-end", "false");
+       
         } 
 
         // add the button to the div container
@@ -94,37 +103,37 @@ function loadQuestions() {
 function checkAnswers(event) {
     // grab btn data attributes set in loadQuestions function
     var value = event.currentTarget.dataset.value;
-    var isAtEnd = event.currentTarget.dataset.end;
+  
 
     // first, if index's added total matches the number of the last question's index, then "is at the end (of the question block)" becomes true
     if (index === (questionsBank.length - 1)) {
-        isAtEnd = "true";
         clearInterval(timer);
         addPlayerDetails();
     }
-
-    // if user chose incorrect answer and there are still more questions, apply timer penalty
-    else if (value === "false" && (index < questionsBank.length - 1)) {
-    deductTime();
-    index++;
-        if (secondsLeft < 0) {
-            secondsLeft = 0;
-            timerElement.textContent = 0 + " s";
-            addPlayerDetails();
-        } else {
-            loadQuestions();
-        }
-    } 
 
     // if user chose correct answer AND index under question bank length, add index -- then, IF timer is under 0, go to high score section; otherwise load the next q
     else if (value === "true" && index < (questionsBank.length - 1)) {
         index++;
             if (secondsLeft < 0) {
+                secondsLeft = 0;
                 addPlayerDetails();
             } else {
                 loadQuestions();
             }
         }
+
+    // if user chose incorrect answer and there are still more questions, apply timer penalty
+    else if (value === "false" && (index < questionsBank.length - 1)) {
+        deductTime();
+        index++;
+            if (secondsLeft < 0) {
+                secondsLeft = 0;
+                timerElement.textContent = 0;
+                addPlayerDetails();
+            } else {
+                loadQuestions();
+            }
+    } 
 }
 
 
@@ -139,33 +148,41 @@ function addPlayerDetails() {
 
 
     var pdsTitle = document.createElement("h2");
-    pdsTitle.append("The quiz has ended!");
-    playerDetailsSection.appendChild(pdsTitle);
+        pdsTitle.append("The quiz has ended!");
+        playerDetailsSection.appendChild(pdsTitle);
 
     var flavourText = document.createElement("p");
-    flavourText.textContent = "Your score is: " + secondsLeft;
-    playerDetailsSection.appendChild(flavourText);
+        flavourText.textContent = "Your final score is " + secondsLeft;
+        playerDetailsSection.appendChild(flavourText);
 
-
-    var formLabel = document.createElement("label");
-    formLabel.textContent = "Your initials: ";
-    playerDetailsSection.appendChild(formLabel);
-
-    var formInput = document.createElement("input");
-    formInput.setAttribute("type", "text");
-    formInput.setAttribute("id", "playerInitialsInput");
-    playerDetailsSection.appendChild(formInput);
+    // create the user form and set its attributes
+    var userForm = document.createElement("form");
+        userForm.setAttribute("method", "post");
     
+    // create the form label and set its text content
+    var formLabel = document.createElement("label");
+        formLabel.textContent = "Your initials: ";
 
+    // create the form input and set its attributes
+    var formInput = document.createElement("input");
+        formInput.setAttribute("type", "text");
+        formInput.setAttribute("id", "player-initials-input");
+
+    // create button for the form
     var submitBtn = document.createElement("button");
-    submitBtn.textContent = "submit";
-    submitBtn.setAttribute("type", "submit");
-    submitBtn.setAttribute("id", "Submit");
-    playerDetailsSection.appendChild(submitBtn);
+        submitBtn.textContent = "submit";
+        submitBtn.setAttribute("type", "submit");
+        submitBtn.setAttribute("id", "submit");
 
-    // setting the score
+    // append label, input, button to form; append form to DOM
+    playerDetailsSection.appendChild(userForm);
+        userForm.appendChild(formLabel);
+        userForm.appendChild(formInput);
+        userForm.appendChild(submitBtn);
 
-    submitBtn.addEventListener("click", function(event) {
+
+    // add event listener to set the score
+    userForm.addEventListener("submit", function(event) {
         event.preventDefault();
 
         setPlayerScore();
@@ -175,8 +192,12 @@ function addPlayerDetails() {
 
 function setPlayerScore() {
     var player = {
-        playerInitials: document.getElementById("playerInitialsInput").value.trim(),
+        playerInitials: document.getElementById("player-initials-input").value.trim(),
         playerScore: secondsLeft
+    }
+
+    if (!player.playerInitials) {
+        player.playerInitials = "Player";
     }
 
     let highscores = JSON.parse(localStorage.getItem("Results"));
@@ -192,25 +213,32 @@ function setPlayerScore() {
 
 
 function retrievePlayerScore() {
-    // variable, for loop, append
     var data = JSON.parse(localStorage.getItem("Results"));
 
     console.log(data);
     
-    //change the second line to a for- or for-each loop to extract data out of the new Results array
+    // change the second line to a for- or for-each loop to extract data out of the new Results array
     // data.forEach(function (item, index) {
     //     var showData = document.createElement("li");
-    //     showData.append(item, index);
+    //     showData.textContent = item[i];
     // });
 
-
+    var dataList = document.createElement("ul");
+    dataList.style.listStyleType = "none";
+    highScoresSection.appendChild(dataList);
+  
+    if (data) {
     for (i = 0; i < data.length; i++) {
-        var showData = document.createElement("div");
-        showData.textContent = "Name: " + data[i].playerInitials + " Score " + data[i].playerScore;
+        var dataListItems = document.createElement("li");
+        dataListItems.textContent = "Name: " + data[i].playerInitials + " Score: " + data[i].playerScore;
 
-        highScoresSection.appendChild(showData);
+        dataList.appendChild(dataListItems);
+        }
+    } else {
+        var emptyDataList = document.createElement("li");
+        emptyDataList.textContent = "Name: --" + " " + "Score: --";
+        dataList.appendChild(emptyDataList);
     }
-
 
 }
 
@@ -224,32 +252,71 @@ function showHighScores() {
     highScoresSection.style.display = "block";
 
     var hssTitle = document.createElement("h2");
-    hssTitle.textContent = "Highest Score";
-    
+    hssTitle.textContent = "High Scores";
 
     highScoresSection.appendChild(hssTitle);
 
 
     retrievePlayerScore();
 
+
+    // create button for returning to start of quiz
+    var goBackBtn = document.createElement("button");
+        goBackBtn.textContent = "Return To Start";
+        goBackBtn.setAttribute("type", "button");
+        goBackBtn.setAttribute("id", "back-to-main");
+
+    highScoresSection.appendChild(goBackBtn);
+
+
+    goBackBtn.addEventListener("click", returnToStart);
+
+
+    // creating button to clear the scores
+    var clearScoresBtn = document.createElement("button");
+        clearScoresBtn.textContent = "Clear Scores";
+        clearScoresBtn.setAttribute("type", "button");
+        clearScoresBtn.setAttribute("id", "clear-scores");
+
+    highScoresSection.appendChild(clearScoresBtn);
+
+
+    clearScoresBtn.addEventListener("click", clearTheScores);
+
+
+}
+
+function returnToStart(event) {
+    
+}
+
+// function to clear the high scores
+function clearTheScores() {
+    window.localStorage.clear();
+    showHighScores();
 }
 
 
 // timer function
 function startTimer() {
-    let timer = setInterval(function() {
-        timerElement.textContent = secondsLeft + " s";
+    // to prevent a delay in the timer: set a function outside of setInterval
+    
+    var timer = setInterval(function() {
+        console.log(secondsLeft);
+        timerElement.textContent = secondsLeft;
         secondsLeft--;
 
         // if seconds reach 0, clear timer and set text to 0
         if (secondsLeft < 0) {
             clearInterval(timer);
-            timerElement.textContent = 0 + " s";
+            secondsLeft = 0;
+            timerElement.textContent = 0;
             addPlayerDetails();
         
         // if index reaches the index of the last question, clear the timer
         } else if (index === questionsBank.length - 1) {
             clearInterval(timer);
+            addPlayerDetails();
         }
 
     }, 1000);
@@ -258,14 +325,13 @@ function startTimer() {
 // take off 10 seconds
 function deductTime() {
     secondsLeft = secondsLeft - 10;
-    timerElement.textContent = secondsLeft + " s";
 }
 
 
 function startQuiz () {
     secondsLeft = 20;
-    loadQuestions();
     startTimer();
+    loadQuestions();
 
     //make a next button
     // var nextButton = document.createElement("button");
