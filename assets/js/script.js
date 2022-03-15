@@ -4,6 +4,7 @@ var linkToHighScores = document.getElementById("highscores");
 var timerElement = document.getElementById("timer-span");
 var quizBoxArea = document.getElementById("quiz-box");
 var startQuizButton = document.getElementById("start-quiz-button");
+var answerCheckArea = document.getElementById("answer-check");
 
 // set welcome msg and container variables
 var welcomeMessage = document.getElementById("welcome-message");
@@ -44,10 +45,17 @@ var questionsBank = [
 var secondsLeft = 15;
 
 
-// functions
+// FUNCTIONS GO HERE
+
+linkToHighScores.addEventListener("click", viewTheScores);
+
+function viewTheScores() {
+    showHighScores();
+}
 
 // add event listener:
 startQuizButton.addEventListener("click", startQuiz);
+
 
 function startQuiz () {
     startTimer();
@@ -59,7 +67,6 @@ function startQuiz () {
 function resetTimer() {
     secondsLeft = 15;
 }
-
 
 function startTimer() {
     var timer = setInterval(function() {
@@ -115,8 +122,13 @@ function loadQuestions() {
         // add a condition and data attribute to decide if an option is true or false, or at the end of the block of questions or not
         if (questionChoices[i] === questionsBank[index].answer) {
             userOptionBtn.setAttribute("data-value", "true");
+
+      
+
         } else {
             userOptionBtn.setAttribute("data-value", "false");
+
+            
         } 
 
         // add the button to the div container
@@ -138,7 +150,9 @@ function checkAnswers(event) {
 
     // if user chose correct answer AND index under question bank length, add index -- then, IF timer is under 0, go to high score section; otherwise load the next q
     else if (value === "true" && index < (questionsBank.length - 1)) {
+        displayCorrectMessage();
         index++;
+
             if (secondsLeft < 0) {
                 secondsLeft = 0;
                 addPlayerDetails();
@@ -149,6 +163,8 @@ function checkAnswers(event) {
 
     // if user chose incorrect answer and there are still more questions, apply timer penalty
     else if (value === "false" && (index < questionsBank.length - 1)) {
+        // displayIncorrectMessage();
+
         deductTime();
         index++;
             if (secondsLeft < 0) {
@@ -159,6 +175,29 @@ function checkAnswers(event) {
             }
     } 
 }
+
+function displayCorrectMessage () {
+    var displayCorrect = document.createElement("p");
+        displayCorrect.setAttribute("id", "notification-correct");
+        displayCorrect.textContent = "Correct!"
+
+    var count = 2;
+    var displayingTime = setInterval(function () {
+        count--;
+
+
+        answerCheckArea.appendChild(displayCorrect);
+    });
+
+}
+
+// function displayIncorrectMessage() {
+//     var displayIncorrect = document.createElement("div");
+//         displayIncorrect.setAttribute("id", "notification-incorrect");
+//         displayIncorrect.textContent = "Incorrect!"
+
+//         answerCheckArea.appendChild(displayIncorrect);
+// }
 
 
 function addPlayerDetails() {
@@ -193,7 +232,7 @@ function addPlayerDetails() {
 
     // create button for the form
     var submitBtn = document.createElement("button");
-        submitBtn.textContent = "submit";
+        submitBtn.textContent = "Submit";
         submitBtn.setAttribute("type", "submit");
         submitBtn.setAttribute("id", "submit");
 
@@ -212,6 +251,7 @@ function addPlayerDetails() {
         showHighScores();
     })
 }
+
 
 function setPlayerScore() {
     var player = {
@@ -244,12 +284,12 @@ function retrievePlayerScore() {
     highScoresSection.appendChild(dataList);
   
     if (data) {
-    for (i = 0; i < data.length; i++) {
+        for (i = 0; i < data.length; i++) {
         var dataListItems = document.createElement("li");
-        dataListItems.textContent = "Name: " + data[i].playerInitials + " Score: " + data[i].playerScore;
+            dataListItems.textContent = "Name: " + data[i].playerInitials + " Score: " + data[i].playerScore;
 
-        dataList.appendChild(dataListItems);
-        }
+            dataList.appendChild(dataListItems);
+            }
     } else {
         var emptyDataList = document.createElement("li");
         emptyDataList.textContent = "Name: --" + " " + "Score: --";
@@ -263,6 +303,7 @@ function showHighScores() {
 
     welcomeMessage.classList.add("hide");
     questionSection.classList.add("hide");
+    answerCheckArea.classList.add("hide");
     playerDetailsSection.classList.add("hide");
     highScoresSection.classList.remove("hide");
 
@@ -271,9 +312,7 @@ function showHighScores() {
 
     highScoresSection.appendChild(hssTitle);
 
-
     retrievePlayerScore();
-
 
     // create button for returning to start of quiz
     var goBackBtn = document.createElement("button");
@@ -285,7 +324,6 @@ function showHighScores() {
 
     goBackBtn.addEventListener("click", returnToStart);
 
-
     // creating button to clear the scores
     var clearScoresBtn = document.createElement("button");
         clearScoresBtn.textContent = "Clear Scores";
@@ -294,7 +332,6 @@ function showHighScores() {
 
     highScoresSection.appendChild(clearScoresBtn);
 
-
     clearScoresBtn.addEventListener("click", clearTheScores);
 }
 
@@ -302,6 +339,7 @@ function showHighScores() {
 function returnToStart() {
     welcomeMessage.classList.remove("hide");
     questionSection.classList.add("hide");
+    answerCheckArea.classList.add("hide");
     playerDetailsSection.classList.add("hide");
     highScoresSection.classList.add("hide");
 
@@ -309,9 +347,11 @@ function returnToStart() {
     resetTimer();
 }
 
+
 // function to clear the high scores
 function clearTheScores() {
     window.localStorage.clear();
     showHighScores();
 }
+
 
