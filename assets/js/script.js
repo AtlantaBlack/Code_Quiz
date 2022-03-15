@@ -23,34 +23,46 @@ var index = 0;
 // dummy questions/answers for testing first
 var questionsBank = [
     {
-        // javascript lesson 5 - primitive types
+        // javascript - primitive types
         title: "Which of the following are primitive data types?",
         choices: ["Strings", "Number", "Undefined", "All of the above"],
         answer: "All of the above"
     },
     {
-        // javascript lesson 7 - logical comparison operators
+        // javascript - logical comparison operators
         title: "What does the strict equality comparison operator (===) compare?",
         choices: ["Value only", "Value and type", "Type only", "Numbers only"],
         answer: "Value and type"
     },
     {
-        // javascript lesson 11 - arrays
-        title: "To store groups of data in a single variable, we use ___?",
+        // javascript - arrays
+        title: "To store groups of data in a single variable, we use ____?",
         choices: ["Arrays", "Variables", "Booleans", "Strings"],
         answer: "Arrays"
     },
     {
-        // javascript lesson 1 - variables
-        title: "5. How are variables assigned?",
+        // javascript - variables
+        title: "How are variables assigned?",
         choices: ["let", "var", "const", "All of the above"],
         answer: "Arrays"
     },
     {
-        // javascript lesson 9 - conditional statements
-        title: "6. What are if/else statements known as?",
+        // javascript - conditional statements
+        title: "What are if/else statements known as?",
         choices: ["Objects", "Primitive data types", "Conditional statements", "Logical comparison operators"],
         answer: "Conditional statements"
+    },
+    {
+        // javascript - booleans
+        title: "What values do Booleans return?",
+        choices: ["Right and Wrong", "True and Wrong", "False and True", "Right and False"],
+        answer: "False and True"
+    },
+    {
+        // javascript - iteration methods
+        title: "forEach() is a type of ____ method for arrays.",
+        choices: ["Mutator", "Iteration", "Accessor", "Concatenation"],
+        answer: "Iteration"
     }
 ];
 
