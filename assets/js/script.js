@@ -4,7 +4,10 @@ var linkToHighScores = document.getElementById("highscores");
 var timerElement = document.getElementById("timer-span");
 var quizBoxArea = document.getElementById("quiz-box");
 var startQuizButton = document.getElementById("start-quiz-button");
-var answerCheckArea = document.getElementById("answer-check");
+
+var answerCheckArea = document.getElementById("answer-check-area")
+var messageCorrect = document.getElementById("correct");
+var messageIncorrect = document.getElementById("incorrect");
 
 // set welcome msg and container variables
 var welcomeMessage = document.getElementById("welcome-message");
@@ -42,8 +45,12 @@ var questionsBank = [
 ];
 
 // timer variables
-var secondsLeft = 15;
+var secondsLeft = 60;
 
+
+welcomeMessage.classList.remove("hide");
+messageCorrect.classList.add("hide");
+messageIncorrect.classList.add("hide");
 
 // FUNCTIONS GO HERE
 
@@ -65,7 +72,7 @@ function startQuiz () {
 
 // timer function
 function resetTimer() {
-    secondsLeft = 15;
+    secondsLeft = 60;
 }
 
 function startTimer() {
@@ -84,7 +91,6 @@ function startTimer() {
         // if index reaches the index of the last question in questionsBank array, clear the timer
         } else if (index === questionsBank.length - 1) {
             clearInterval(timer);
-            addPlayerDetails();
         }
 
     }, 1000);
@@ -123,13 +129,8 @@ function loadQuestions() {
         // add a condition and data attribute to decide if an option is true or false, or at the end of the block of questions or not
         if (questionChoices[i] === questionsBank[index].answer) {
             userOptionBtn.setAttribute("data-value", "true");
-        
-      
-
         } else {
             userOptionBtn.setAttribute("data-value", "false");
-
-            
         } 
 
         // add the button to the div container
@@ -145,16 +146,12 @@ function checkAnswers(event) {
     // grab btn data attributes set in loadQuestions function
     var value = event.currentTarget.dataset.value;
 
-    if (index === (questionsBank.length - 1)) {
-        addPlayerDetails();
-    }
-
-    // if user chose correct answer AND index under question bank length, add index -- then, IF timer is under 0, go to high score section; otherwise load the next q
-    else if (value === "true" && index < (questionsBank.length - 1)) {
-        displayCorrectMessage();
+    if (value === "true") {
+        displayCorrect();
         index++;
-
-            if (secondsLeft < 0) {
+            if (index === questionsBank.length) {
+                addPlayerDetails();
+            } else if (secondsLeft < 0) {
                 secondsLeft = 0;
                 addPlayerDetails();
             } else {
@@ -162,49 +159,31 @@ function checkAnswers(event) {
             }
         }
 
-    // if user chose incorrect answer and there are still more questions, apply timer penalty
-    else if (value === "false" && (index < questionsBank.length - 1)) {
-        // displayIncorrectMessage();
-
+    else if (value === "false") {
+        displayIncorrect();
         deductTime();
         index++;
-            if (secondsLeft < 0) {
+            if (index === questionsBank.length) {
+                addPlayerDetails();
+            } else if (secondsLeft < 0) {
                 secondsLeft = 0;
                 addPlayerDetails();
             } else {
                 loadQuestions();
             }
     } 
-}
-
-function displayCorrectMessage () {
- 
-
-    var displayCorrect = document.createElement("p");
-        displayCorrect.setAttribute("id", "notification-correct");
-        displayCorrect.textContent = "Correct!"
-
-    var count = 2;
-    var messageDisplay = setInterval(function () {
-        
-        count--;
-        answerCheckArea.appendChild(displayCorrect);
-
-        if (count === 0) {
-            clearInterval(messageDisplay);
-            answerCheckArea.classList.add("hide");
-        }
-    }, 1000);
 
 }
 
-// function displayIncorrectMessage() {
-//     var displayIncorrect = document.createElement("div");
-//         displayIncorrect.setAttribute("id", "notification-incorrect");
-//         displayIncorrect.textContent = "Incorrect!"
+function displayCorrect() {
+    messageCorrect.classList.remove("hide");
+    messageIncorrect.classList.add("hide");
+}
 
-//         answerCheckArea.appendChild(displayIncorrect);
-// }
+function displayIncorrect() {
+    messageCorrect.classList.add("hide");
+    messageIncorrect.classList.remove("hide");
+}
 
 
 function addPlayerDetails() {
