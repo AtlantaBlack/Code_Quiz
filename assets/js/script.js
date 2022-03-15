@@ -192,7 +192,7 @@ function displayCorrectMessage () {
 
         if (count === 0) {
             clearInterval(messageDisplay);
-  
+            answerCheckArea.classList.add("hide");
         }
     }, 1000);
 
@@ -212,7 +212,7 @@ function addPlayerDetails() {
 
     welcomeMessage.classList.add("hide");
     questionSection.classList.add("hide");
-    // answerCheckArea.classList.add("hide");
+    answerCheckArea.classList.add("hide");
     playerDetailsSection.classList.remove("hide");
     highScoresSection.classList.add("hide");
 
