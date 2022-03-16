@@ -10,8 +10,10 @@
     --coral-light: #f07067b9;
 
     --off-white: rgb(255, 252, 240);
+    --ghost: rgb(255, 254, 249);
 }
 
+/* UNIVERSAL */
 
 *,
 *::before,
@@ -21,6 +23,7 @@
 
 
 /* BODY */
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     line-height: 1.5rem;
@@ -29,7 +32,6 @@ body {
 }
 
 h1, h2, h3 {
-    font-family: "Didot", "Georgia", Times, serif;
     padding: 1.5rem 1rem;
 }
 
@@ -46,7 +48,6 @@ h2 {
 h3 { 
     font-weight: 600;
     font-size: 1.2rem; 
-    line-height: auto;
 }
 
 p {
@@ -54,22 +55,9 @@ p {
     margin: 0 0.2rem;
 }
 
-.hide {
-    display: none;
-}
-
-.fancy {
-    font-family: "Didot", "Georgia", Times, serif;
-}
-
-.italicised {
-    font-style: italic;
-}
-
 button {
     -webkit-appearance:none;
     appearance:none;
-    
     background-color: var(--sea-blue);
     color: var(--cream);
     min-width: 15vw;
@@ -92,6 +80,22 @@ button:focus {
     color: var(--sea-blue);
 }
 
+/* specialty classes */
+.hide {
+    display: none;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.fancy {
+    font-family: "Didot", "Georgia", Times, serif;
+}
+
+.italicised {
+    font-style: italic;
+}
 
 
 /* HEADER */
@@ -110,7 +114,6 @@ header div {
 }
 
 .header-flexbox {
-    /* border: 1px solid hotpink; */
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
@@ -120,7 +123,6 @@ header div {
 .header-container {
     flex: 0 0 auto;
 }
-
 
 .timer-div {
     background-color: var(--cream);
@@ -137,17 +139,15 @@ header div {
     border-radius: 50%;
 }
 
-
 #timer-span {
     font-weight: bold;
     font-size: 1.3rem;
 }
 
 
-/* MAIN */
+/* MAIN (general) */
 
 .main-flexbox {
-    /* border: 1px solid black; */
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -175,11 +175,11 @@ header div {
 }
 
 
-/* QUIZ STUFF */
+/* QUIZ BOX */
 
+/* QUIZ BOX: welcome section */
 
 #welcome-message {
-    background-color: var(--off-white);
     text-align: center;
 }
 
@@ -208,6 +208,8 @@ header div {
     font-family: "Didot", "Georgia", Times, serif;
     font-style: oblique;
 }
+
+/* QUIZ BOX: load in questions section */
 
 #question-section {
     width: 100%;
@@ -239,37 +241,98 @@ header div {
     color: #df271ae3;
 }
 
+/* QUIZ BOX: input player details section */
+
 #player-details-section {
-    background-color: lightblue;
     text-align: center;
 }
 
+#player-details-section h2 {
+    border-bottom: 2px solid var(--coral);
+    font-weight: bold;
+    padding-bottom: 5%;
+    margin-bottom: 0;
+}
+
 #player-details-section p {
-    margin: 1rem 0.5rem;
+    margin: 1rem;
 }
 
-#player-details-section form {
-    border: 1px solid red;
+#player-details-section h3 {
+    font-weight: 700;
+    padding: 2%;
 }
 
+#user-form {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: baseline;
+    margin: 0.3rem 0;
+}
+
+#user-form label,
+#user-form input {
+    display: inline-block;
+    margin: 0.3rem;
+}
+
+#player-initials-input[type=text] {
+    width: 40%;
+    text-transform: uppercase;
+    font-weight: 500;
+    background-color: var(--ghost);
+    color: var(--deep-sea);
+    border: 2px solid var(--light-turquoise);
+    border-radius: 20px;
+    padding: 10px 20px;
+}
+
+#submit {
+    max-width: 35%;
+    margin: 0.4rem;
+}
+
+/* QUIZ BOX: high scores section */
 #high-scores-section {
-    background-color: var(--light-turquoise);
+    background-color: var(--off-white);
 }
+
+#data-list {
+    list-style-type: numbered;
+    list-style-position: inside;
+    background-color: var(--coral-light);
+    width: 100%;
+}
+
+#data-list li{
+    background-color: var(--coral-light);
+    padding: 0.4rem 1.5rem;
+}
+
+#data-list li:nth-child(even) {
+    background-color: var(--peach);
+}
+
+#utility-button-area {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+}
+
 
 /* FOOTER */
 
 footer {
-    /* border: 1px solid hotpink; */
     display: flex;
     justify-content: center;
     padding: 20px;
 }
 
-@media screen and (max-width: 992px) {
-    .content-div {
-        padding: 15%;
-    }
-}
+
+/* MEDIA QUERIES */
 
 @media screen and (max-width: 768px) {
     .content-div {
@@ -279,16 +342,43 @@ footer {
     #button-area button {
         margin: 0.2rem 0;
     }
+
+    #user-form {
+        flex-flow: column;
+        align-items: center;
+    }
+
+    #user-form label,
+    #user-form input {
+        display: block;
+    }
+
+    #player-initials-input[type=text] {
+        min-width: 100%;
+    }
+
+    #submit {
+        margin: 0.3rem;
+    }
 }
 
 @media screen and (max-width: 420px) {
+    button {
+        min-width: 35vw;
+    }
+
     .content-div {
-        padding: 8% 2%;
+        padding: 8% 4%;
     }
 
     #welcome-message li p::before,
     #welcome-message li p::after {
         content: "•";
         margin: 0 0.2rem;
+    }
+
+    #utility-button-area {
+        flex-flow: column;
+        align-items: initial;
     }
 }

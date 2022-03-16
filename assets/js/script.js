@@ -1,19 +1,23 @@
-var linkToHighScores = document.getElementById("highscores");
+// grab the variables from HTML
+
 var timerElement = document.getElementById("timer-span");
-var resetQuizButton = document.getElementById("reset-quiz-button");
 var quizBoxArea = document.getElementById("quiz-box");
+var linkToHighScores = document.getElementById("highscores");
+var resetQuizButton = document.getElementById("reset-quiz-button");
 var startQuizButton = document.getElementById("start-quiz-button");
 
-var answerCheckArea = document.getElementById("answer-check-area")
-var messageCorrect = document.getElementById("correct");
-var messageIncorrect = document.getElementById("incorrect");
-
-// set welcome msg and container variables
+// grab the variables for quiz box section
 var welcomeMessage = document.getElementById("welcome-message");
 var questionSection = document.getElementById("question-section");
 var playerDetailsSection = document.getElementById("player-details-section")
 var highScoresSection = document.getElementById("high-scores-section");
 
+// grab the variables for answer check section
+var answerCheckArea = document.getElementById("answer-check-area")
+var messageCorrect = document.getElementById("correct");
+var messageIncorrect = document.getElementById("incorrect");
+
+// GLOBAL VARIABLES // 
 
 // to use index later, set it to 0 here first
 var index = 0;
@@ -59,24 +63,20 @@ var questionsBank = [
 
 // timer variables
 var secondsLeft;
+var timer;
 
+// set the variable to use for showing and hiding different sections
 var steps = {
     "welcome": welcomeMessage,
     "quizsection": questionSection,
-    // "answercheck": answerCheckArea,
     "playerdetails": playerDetailsSection,
     "scoresection": highScoresSection
 }
 
 
-// FUNCTIONS GO HERE
+// FUNCTIONS
 
-
-function initiate() {
-    showSteps("welcome");
-    answerCheckArea.classList.add("hide");
-}
-
+// to determine what to show or hide when cycling through each quiz box section
 function showSteps(name) {
     for (key in steps) {
         var selected = steps[key];
@@ -92,6 +92,7 @@ function showSteps(name) {
 }
 
 
+
 function viewTheScores() {
     showHighScores();
 }
@@ -101,17 +102,14 @@ function startQuiz() {
     resetTimer();
     timerElement.textContent = secondsLeft;
     startTimer();
+    linkToHighScores.disabled = true;
     loadQuestions();
 }
 
 
 // timer function
-function resetTimer() {
-    secondsLeft = 60;
-}
-
 function startTimer() {
-    var timer = setInterval(function () {
+    timer = setInterval(function () {
         console.log(secondsLeft);
         secondsLeft--;
 
@@ -135,7 +133,35 @@ function startTimer() {
     }, 1000);
 }
 
-// take off 10 seconds
+function stopTimer() {
+    if (timer) {
+    clearInterval(timer);
+    }
+}
+
+function resetTimer() {
+    secondsLeft = 60;
+}
+
+function hardReset() {
+    stopTimer();
+    console.log("stop " + timer);
+    console.log("stop " + secondsLeft);
+
+    resetTimer();
+    console.log("reset " + timer);
+    console.log("reset " + secondsLeft);
+    timerElement.textContent = secondsLeft;
+
+    returnToStart();
+    console.log("return " + timer);
+    console.log("return " + secondsLeft);
+
+    linkToHighScores.disabled = false;
+}
+
+
+// take off 5 seconds
 function deductTime() {
     secondsLeft = secondsLeft - 5;
     if (secondsLeft <= 0) {
@@ -181,9 +207,11 @@ function loadQuestions() {
     //clear the question container box
     questionSection.innerHTML = "";
 
-    questionSection.style.fontWeight = "bold";
-
     showSteps("quizsection");
+
+    questionSection.style.fontWeight = "bold";
+    resetQuizButton.disabled = true;
+    resetQuizButton.classList.add("invisible");
 
     // create title and choice variables for readability
     var questionTitle = questionsBank[index].title;
@@ -219,11 +247,7 @@ function loadQuestions() {
         // when user option is clicked, check the answers
         userOptionBtn.addEventListener("click", checkAnswers);
     }
-
-    resetQuizButton.addEventListener("click", function() {
-        resetTimer();
-        return;
-    })
+    
 }
 
 // check values of the click event to determine if answer is right or wrong
@@ -264,7 +288,12 @@ function addPlayerDetails() {
 
     showSteps("playerdetails");
 
+    resetQuizButton.disabled = false;
+    resetQuizButton.classList.remove("invisible");
+
     var pdsTitle = document.createElement("h2");
+    pdsTitle.classList.add("fancy");
+    pdsTitle.classList.add("italicised");
     pdsTitle.append("The quiz has ended!");
     playerDetailsSection.appendChild(pdsTitle);
 
@@ -276,16 +305,26 @@ function addPlayerDetails() {
     flavourText.textContent = "Well done! We hope you enjoyed the quiz and learnt a thing or two about Javascript.";
     playerDetailsSection.appendChild(flavourText);
 
+    var inputDetailsTitle = document.createElement("h3");
+    inputDetailsTitle.textContent = "Now, let's add you to the high scores."
+    playerDetailsSection.appendChild(inputDetailsTitle);
+
+    var formArea = document.createElement("div");
+    formArea.setAttribute("id", "user-form-area");
+
     // create the user form and set its attributes
     var userForm = document.createElement("form");
+    userForm.setAttribute("id", "user-form");
     userForm.setAttribute("method", "post");
 
     // create the form label and set its text content
     var formLabel = document.createElement("label");
+    formLabel.setAttribute("for", "player-initials");
     formLabel.textContent = "Your initials: ";
 
     // create the form input and set its attributes
     var formInput = document.createElement("input");
+    formLabel.setAttribute("for", "player-initials");
     formInput.setAttribute("type", "text");
     formInput.setAttribute("id", "player-initials-input");
 
@@ -295,8 +334,9 @@ function addPlayerDetails() {
     submitBtn.setAttribute("type", "submit");
     submitBtn.setAttribute("id", "submit");
 
-    // append label, input, button to form; append form to DOM
-    playerDetailsSection.appendChild(userForm);
+    // append label, input, button to form; append form to form area (for styling); append formArea to DOM
+    playerDetailsSection.appendChild(formArea);
+    formArea.appendChild(userForm);
     userForm.appendChild(formLabel);
     userForm.appendChild(formInput);
     userForm.appendChild(submitBtn);
@@ -337,27 +377,27 @@ function setPlayerScore() {
 function retrievePlayerScore() {
     var data = JSON.parse(localStorage.getItem("Results"));
 
-    var dataList = document.createElement("ul");
-    dataList.style.listStyleType = "none";
+    var dataList = document.createElement("ol");
+    dataList.setAttribute("id", "data-list");
     highScoresSection.appendChild(dataList);
 
     if (data) {
         for (i = 0; i < data.length; i++) {
             var dataListItems = document.createElement("li");
-            dataListItems.textContent = "Name: " + data[i].playerInitials + " Score: " + data[i].playerScore;
+            dataListItems.textContent = data[i].playerInitials + " — " + data[i].playerScore;
 
             dataList.appendChild(dataListItems);
         }
     } else {
         var emptyDataList = document.createElement("li");
-        emptyDataList.textContent = "Name: --" + " " + "Score: --";
+        emptyDataList.textContent = "No scores here!";
         dataList.appendChild(emptyDataList);
     }
 }
 
 
 function showHighScores() {
-
+    linkToHighScores.disabled = false;
     highScoresSection.innerHTML = "";
 
     showSteps("scoresection");
@@ -369,13 +409,17 @@ function showHighScores() {
 
     retrievePlayerScore();
 
+    var utilityButtonArea = document.createElement("div");
+    utilityButtonArea.setAttribute("id", "utility-button-area");
+    highScoresSection.appendChild(utilityButtonArea);
+
     // create button for returning to start of quiz
     var goBackBtn = document.createElement("button");
-    goBackBtn.textContent = "Return To Start";
+    goBackBtn.textContent = "Back To Start";
     goBackBtn.setAttribute("type", "button");
     goBackBtn.setAttribute("id", "back-to-main");
 
-    highScoresSection.appendChild(goBackBtn);
+    utilityButtonArea.appendChild(goBackBtn);
 
     goBackBtn.addEventListener("click", returnToStart);
 
@@ -385,20 +429,17 @@ function showHighScores() {
     clearScoresBtn.setAttribute("type", "button");
     clearScoresBtn.setAttribute("id", "clear-scores");
 
-    highScoresSection.appendChild(clearScoresBtn);
+    utilityButtonArea.appendChild(clearScoresBtn);
 
     clearScoresBtn.addEventListener("click", clearTheScores);
 }
 
-
+// function to restart
 function returnToStart() {
     showSteps("welcome");
     index = 0;
 }
 
-function end() {
-    return;
-}
 
 // function to clear the high scores
 function clearTheScores() {
@@ -406,11 +447,19 @@ function clearTheScores() {
     showHighScores();
 }
 
+// initiate the page
+function initiate() {
+    showSteps("welcome");
+    answerCheckArea.classList.add("hide");
+}
 
+
+// event listener button for viewing high scores
 linkToHighScores.addEventListener("click", viewTheScores);
-
-resetQuizButton.addEventListener("click", returnToStart);
-
+// button to reset the quiz
+resetQuizButton.addEventListener("click", hardReset);
+// button to start the quiz
 startQuizButton.addEventListener("click", startQuiz);
 
+// start the whole thing
 initiate();
