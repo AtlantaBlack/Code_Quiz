@@ -44,4 +44,4 @@ Class Notes
 
 © 2022 Sushan Yue
 
-[MIT License](/LICENSE)
+[MIT License](/LICENSE.txt)
