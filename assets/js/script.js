@@ -1,5 +1,3 @@
-
-
 var linkToHighScores = document.getElementById("highscores");
 var timerElement = document.getElementById("timer-span");
 var resetQuizButton = document.getElementById("reset-quiz-button");
@@ -21,7 +19,6 @@ var highScoresSection = document.getElementById("high-scores-section");
 var index = 0;
 
 // questions and answers:
-// dummy questions/answers for testing first
 var questionsBank = [
     {   // javascript - primitive types
         title: "Which of the following are primitive data types?",
@@ -72,8 +69,13 @@ var steps = {
 }
 
 
-
 // FUNCTIONS GO HERE
+
+
+function initiate() {
+    showSteps("welcome");
+    answerCheckArea.classList.add("hide");
+}
 
 function showSteps(name) {
     for (key in steps) {
@@ -95,16 +97,6 @@ function viewTheScores() {
 }
 
 
-
-showSteps("welcome");
-
-linkToHighScores.addEventListener("click", viewTheScores);
-
-resetQuizButton.addEventListener("click", returnToStart);
-
-startQuizButton.addEventListener("click", startQuiz);
-
-
 function startQuiz() {
     resetTimer();
     timerElement.textContent = secondsLeft;
@@ -122,8 +114,8 @@ function startTimer() {
     var timer = setInterval(function () {
         console.log(secondsLeft);
         secondsLeft--;
-    
-        if (secondsLeft >= 0){
+
+        if (secondsLeft >= 0) {
             timerElement.textContent = secondsLeft;
         }
 
@@ -131,29 +123,67 @@ function startTimer() {
         if (secondsLeft <= 0) {
             clearInterval(timer);
             secondsLeft = 0;
+            timerElement.textContent = secondsLeft;
             addPlayerDetails();
 
             // if index reaches the index of the last question in questionsBank array, clear the timer
-        } else if (index === questionsBank.length - 1) {
+        } else if (index === questionsBank.length) {
             clearInterval(timer);
-        } 
+            timerElement.textContent = secondsLeft;
+        }
 
     }, 1000);
 }
 
 // take off 10 seconds
 function deductTime() {
-    secondsLeft = secondsLeft - 10;
+    secondsLeft = secondsLeft - 5;
+    if (secondsLeft <= 0) {
+        secondsLeft = 0;
+    }
+}
+
+
+function fadeOutEffect() {
+    let fadeTarget = answerCheckArea;
+
+    let fadeEffect = setInterval(function() {
+        if (!fadeTarget.style.opacity) {
+            fadeTarget.style.opacity = 1;
+        }
+
+        if (fadeTarget.style.opacity > 0) {
+            fadeTarget.style.opacity -= 0.1;
+        } else {
+            clearInterval(fadeEffect);
+        }
+    }, 35);
+}
+
+function answerDisplay() {
+    setTimeout(fadeOutEffect, 800);
+}
+
+function displayCorrect() {
+    messageCorrect.classList.remove("hide");
+    messageIncorrect.classList.add("hide");
+    answerDisplay();
+}
+
+function displayIncorrect() {
+    messageCorrect.classList.add("hide");
+    messageIncorrect.classList.remove("hide");
+    answerDisplay();
 }
 
 
 function loadQuestions() {
-
-    showSteps("quizsection");
-
     //clear the question container box
     questionSection.innerHTML = "";
 
+    questionSection.style.fontWeight = "bold";
+
+    showSteps("quizsection");
 
     // create title and choice variables for readability
     var questionTitle = questionsBank[index].title;
@@ -163,11 +193,18 @@ function loadQuestions() {
     // NB: append for strings; appendChild for DOM elements
     questionSection.append(questionTitle);
 
+
+    var buttonArea = document.createElement("div");
+    buttonArea.setAttribute("id", "button-area");
+    questionSection.appendChild(buttonArea);
+
+
     // create a button for each choice
     for (let i = 0; i < questionChoices.length; i++) {
         var userOptionBtn = document.createElement("button");
-        userOptionBtn.setAttribute("id", "user-option-button");
         userOptionBtn.textContent = (i + 1) + ". " + questionChoices[i];
+        userOptionBtn.setAttribute("id", "user-option-button");
+        userOptionBtn.setAttribute("style", "text-align:left;");
 
         // add a condition and data attribute to decide if an option is true or false, or at the end of the block of questions or not
         if (questionChoices[i] === questionsBank[index].answer) {
@@ -177,11 +214,16 @@ function loadQuestions() {
         }
 
         // add the button to the div container
-        questionSection.appendChild(userOptionBtn);
+        buttonArea.appendChild(userOptionBtn);
 
         // when user option is clicked, check the answers
         userOptionBtn.addEventListener("click", checkAnswers);
     }
+
+    resetQuizButton.addEventListener("click", function() {
+        resetTimer();
+        return;
+    })
 }
 
 // check values of the click event to determine if answer is right or wrong
@@ -190,15 +232,11 @@ function checkAnswers(event) {
     var value = event.currentTarget.dataset.value;
     answerCheckArea.classList.remove("hide");
 
-    console.log(answerCheckArea);
 
     if (value === "true") {
         displayCorrect();
         index++;
         if (index === questionsBank.length) {
-            addPlayerDetails();
-        } else if (secondsLeft <= 0) {
-            // secondsLeft = 0;
             addPlayerDetails();
         } else {
             loadQuestions();
@@ -209,24 +247,15 @@ function checkAnswers(event) {
         index++;
         if (index === questionsBank.length) {
             addPlayerDetails();
-        } else if (secondsLeft <= 0) {
-            // secondsLeft = 0;
-            addPlayerDetails();
         } else {
             loadQuestions();
         }
     }
+
+    // reset answerCheckArea opacity to 1, ready for next button click
+    answerCheckArea.style.opacity = 1;
 }
 
-function displayCorrect() {
-    messageCorrect.classList.remove("hide");
-    messageIncorrect.classList.add("hide");
-}
-
-function displayIncorrect() {
-    messageCorrect.classList.add("hide");
-    messageIncorrect.classList.remove("hide");
-}
 
 
 function addPlayerDetails() {
@@ -240,7 +269,7 @@ function addPlayerDetails() {
     playerDetailsSection.appendChild(pdsTitle);
 
     var finalScoreText = document.createElement("p");
-    finalScoreText.textContent = "Your final score is " + secondsLeft + "!";
+    finalScoreText.textContent = "Your final score is " + secondsLeft + ".";
     playerDetailsSection.appendChild(finalScoreText);
 
     var flavourText = document.createElement("p");
@@ -280,6 +309,7 @@ function addPlayerDetails() {
         setPlayerScore();
         showHighScores();
     })
+
 }
 
 
@@ -307,8 +337,6 @@ function setPlayerScore() {
 function retrievePlayerScore() {
     var data = JSON.parse(localStorage.getItem("Results"));
 
-    console.log(data);
-
     var dataList = document.createElement("ul");
     dataList.style.listStyleType = "none";
     highScoresSection.appendChild(dataList);
@@ -329,6 +357,7 @@ function retrievePlayerScore() {
 
 
 function showHighScores() {
+
     highScoresSection.innerHTML = "";
 
     showSteps("scoresection");
@@ -367,9 +396,21 @@ function returnToStart() {
     index = 0;
 }
 
+function end() {
+    return;
+}
 
 // function to clear the high scores
 function clearTheScores() {
     window.localStorage.clear();
     showHighScores();
 }
+
+
+linkToHighScores.addEventListener("click", viewTheScores);
+
+resetQuizButton.addEventListener("click", returnToStart);
+
+startQuizButton.addEventListener("click", startQuiz);
+
+initiate();

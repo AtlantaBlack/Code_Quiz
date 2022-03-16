@@ -23,8 +23,8 @@
 
             <div class="header-container">
                 <div class="timer-div" id="timer-box">
-                    <p>Timer:<p>
-                    <p id="timer-span">--</p>
+                    <p class="fancy italicised">time left:<p>
+                    <p id="timer-span">60</p>
                 </div>
             </div>
 
@@ -42,30 +42,44 @@
 
             <div class="main-container">
                 <div class="content-div" id="quiz-box">
-                    <div id="welcome-message">
-                        <h1>Javascript Coding Quiz</h1>
+                    <section id="welcome-message">
+                        <h1 class="fancy italicised">Javascript Coding Quiz</h1>
 
-                        <p>Let's do a fun little quiz to test your Javascript knowledge!</p>
+                        <p>All front-end developers need to know a little bit of coding, so let's do a mini quiz to test how much you know about Javascript!</p>
+
+                        <ul>
+                            <li>
+                                <p>60 seconds to the timer</p>
+                            </li>
+                            <li>
+                                <p>5 second penalty per incorrect choice</p>
+                            </li>
+                        </ul>
+
+                        <p id="ready">Are you ready?</p>
 
                         <button id="start-quiz-button">START</button>
-                    </div>
+                    </section>
                     
-                    <div id="question-section">
+                    <section id="question-section">
                         <!-- quiz will load here -->
-                        <div id="answer-check-area">
-                            <!-- box for correct or incorrect answers to appear -->
-                            <div id="correct">Correct!</div>
-                            <div id="incorrect">Incorrect!</div>
-                        </div>
-                    </div>
+                    </section>
 
-                    <div id="player-details-section">
+
+                    <section id="player-details-section">
                         <!-- player details submission form will load here -->
-                    </div>
+                    </section>
 
-                    <div id="high-scores-section">
+
+                    <section id="answer-check-area">
+                        <!-- box for correct or incorrect answers to appear -->
+                        <section id="correct">Correct!</section>
+                        <section id="incorrect">Incorrect! (-5)</section>
+                    </section>
+
+                    <section id="high-scores-section">
                         <!-- tally of scores will load here -->
-                    </div>
+                    </section>
                 </div>
             </div>
 
