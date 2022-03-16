@@ -387,7 +387,13 @@ function retrievePlayerScore() {
             dataListItems.textContent = data[i].playerInitials + " — " + data[i].playerScore;
 
             dataList.appendChild(dataListItems);
+
+
+        data.sort(function(a, b) {
+            return parseFloat(b.playerScore) - parseFloat(a.playerScore);
+        })
         }
+
     } else {
         var emptyDataList = document.createElement("li");
         emptyDataList.textContent = "No scores here!";
