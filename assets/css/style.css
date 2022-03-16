@@ -141,7 +141,7 @@ header div {
 
 #timer-span {
     font-weight: bold;
-    font-size: 1.3rem;
+    font-size: 1.4rem;
 }
 
 
@@ -275,10 +275,11 @@ header div {
 #user-form input {
     display: inline-block;
     margin: 0.3rem;
+    min-width: 18%;
 }
 
 #player-initials-input[type=text] {
-    width: 40%;
+    min-width: 40%;
     text-transform: uppercase;
     font-weight: 500;
     background-color: var(--ghost);
@@ -288,8 +289,8 @@ header div {
     padding: 10px 20px;
 }
 
-#submit {
-    max-width: 35%;
+#submit-button {
+    max-width: 3rem;
     margin: 0.4rem;
 }
 
@@ -357,7 +358,7 @@ footer {
         min-width: 100%;
     }
 
-    #submit {
+    #submit-button {
         margin: 0.3rem;
     }
 }

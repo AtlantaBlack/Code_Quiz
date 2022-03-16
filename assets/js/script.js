@@ -210,8 +210,9 @@ function loadQuestions() {
     showSteps("quizsection");
 
     questionSection.style.fontWeight = "bold";
-    resetQuizButton.disabled = true;
-    resetQuizButton.classList.add("invisible");
+
+    // resetQuizButton.disabled = true;
+    // resetQuizButton.classList.add("invisible");
 
     // create title and choice variables for readability
     var questionTitle = questionsBank[index].title;
@@ -261,6 +262,7 @@ function checkAnswers(event) {
         displayCorrect();
         index++;
         if (index === questionsBank.length) {
+            stopTimer();
             addPlayerDetails();
         } else {
             loadQuestions();
@@ -270,6 +272,7 @@ function checkAnswers(event) {
         deductTime();
         index++;
         if (index === questionsBank.length) {
+            stopTimer();
             addPlayerDetails();
         } else {
             loadQuestions();
@@ -284,17 +287,19 @@ function checkAnswers(event) {
 
 function addPlayerDetails() {
     playerDetailsSection.innerHTML = "";
-    timerElement.textContent = secondsLeft;
 
     showSteps("playerdetails");
 
-    resetQuizButton.disabled = false;
-    resetQuizButton.classList.remove("invisible");
+
+    timerElement.textContent = secondsLeft;
+
+    // resetQuizButton.disabled = false;
+    // resetQuizButton.classList.remove("invisible");
 
     var pdsTitle = document.createElement("h2");
     pdsTitle.classList.add("fancy");
     pdsTitle.classList.add("italicised");
-    pdsTitle.append("The quiz has ended!");
+    pdsTitle.append("You finished the quiz!");
     playerDetailsSection.appendChild(pdsTitle);
 
     var finalScoreText = document.createElement("p");
@@ -320,7 +325,7 @@ function addPlayerDetails() {
     // create the form label and set its text content
     var formLabel = document.createElement("label");
     formLabel.setAttribute("for", "player-initials");
-    formLabel.textContent = "Your initials: ";
+    formLabel.textContent = "Your initials:";
 
     // create the form input and set its attributes
     var formInput = document.createElement("input");
@@ -332,7 +337,7 @@ function addPlayerDetails() {
     var submitBtn = document.createElement("button");
     submitBtn.textContent = "Submit";
     submitBtn.setAttribute("type", "submit");
-    submitBtn.setAttribute("id", "submit");
+    submitBtn.setAttribute("id", "submit-button");
 
     // append label, input, button to form; append form to form area (for styling); append formArea to DOM
     playerDetailsSection.appendChild(formArea);
@@ -382,16 +387,17 @@ function retrievePlayerScore() {
     highScoresSection.appendChild(dataList);
 
     if (data) {
-        for (i = 0; i < data.length; i++) {
-            var dataListItems = document.createElement("li");
-            dataListItems.textContent = data[i].playerInitials + " — " + data[i].playerScore;
-
-            dataList.appendChild(dataListItems);
 
 
         data.sort(function(a, b) {
             return parseFloat(b.playerScore) - parseFloat(a.playerScore);
         })
+
+        for (i = 0; i < data.length; i++) {
+            var dataListItems = document.createElement("li");
+            dataListItems.textContent = data[i].playerInitials + " — " + data[i].playerScore;
+
+            dataList.appendChild(dataListItems);
         }
 
     } else {
