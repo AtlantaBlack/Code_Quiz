@@ -35,7 +35,7 @@ var questionsBank = [
         answer: "Value and type"
     },
     {   // javascript - arrays
-        title: "To store groups of data in a single variable, we use ____?",
+        title: "To store groups of data in a single variable, we use ____.",
         choices: ["Arrays", "Variables", "Booleans", "Strings"],
         answer: "Arrays"
     },
@@ -61,10 +61,6 @@ var questionsBank = [
     }
 ];
 
-// timer variables
-var secondsLeft;
-var timer;
-
 // set the variable to use for showing and hiding different sections
 var steps = {
     "welcome": welcomeMessage,
@@ -73,23 +69,24 @@ var steps = {
     "scoresection": highScoresSection
 }
 
+// timer variables
+var secondsLeft;
+var timer;
+
 
 // FUNCTIONS
 
-// to determine what to show or hide when cycling through each quiz box section
+// to determine what section to show or hide when cycling through each quiz box section
 function showSteps(name) {
     for (key in steps) {
         var selected = steps[key];
         if (key === name) {
             selected.classList.remove("hide");
-            console.log("showing " + key)
         } else {
             selected.classList.add("hide");
-            console.log("hiding " + key);
         }
     }
 }
-
 
 
 function viewTheScores() {
@@ -105,13 +102,24 @@ function startQuiz() {
     loadQuestions();
 }
 
+// when user presses reset quiz: stop and restart timer, return to the welcome page, reset timer countdown to show full seconds left
+function hardReset() {
+    stopTimer();
+    resetTimer();
+    returnToStart();
+    timerElement.textContent = secondsLeft;
+    linkToHighScores.disabled = false;
+}
 
-// timer function
+
+// timer functions
+
+// main timer function that counts the seconds down
 function startTimer() {
     timer = setInterval(function () {
-        console.log(secondsLeft);
         secondsLeft--;
 
+        // show timer as seconds remaining on the clock
         if (secondsLeft >= 0) {
             timerElement.textContent = secondsLeft;
         }
@@ -127,6 +135,14 @@ function startTimer() {
     }, 1000);
 }
 
+// take off 5 seconds for an incorrect answer
+function deductTime() {
+    secondsLeft = secondsLeft - 5;
+    if (secondsLeft <= 0) {
+        secondsLeft = 0;
+    }
+}
+
 function stopTimer() {
     if (timer) {
     clearInterval(timer);
@@ -137,24 +153,9 @@ function resetTimer() {
     secondsLeft = 60;
 }
 
-function hardReset() {
-    stopTimer();
-    resetTimer();
-    returnToStart();
+// answer check functions
 
-    linkToHighScores.disabled = false;
-}
-
-
-// take off 5 seconds
-function deductTime() {
-    secondsLeft = secondsLeft - 5;
-    if (secondsLeft <= 0) {
-        secondsLeft = 0;
-    }
-}
-
-
+// fade-out effect of 'correct' and 'incorrect' notificiations
 function fadeOutEffect() {
     let fadeTarget = answerCheckArea;
 
@@ -171,10 +172,12 @@ function fadeOutEffect() {
     }, 35);
 }
 
+// delay the fade effect so people can read the text before it fades out
 function answerDisplay() {
     setTimeout(fadeOutEffect, 800);
 }
 
+// display message functions: hide and unhide the relevant divs
 function displayCorrect() {
     messageCorrect.classList.remove("hide");
     messageIncorrect.classList.add("hide");

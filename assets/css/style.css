@@ -1,12 +1,14 @@
 :root {
     --deep-sea: #004369;
     --sea-blue: #0081a7;
-    --light-turquoise: #00afb9;
+    --turquoise: #00afb9;
     --cream: #fdfcdc;
     --peach: #fed9b7;
     --coral: #f07167;
 
     --sea-blue-light: rgba(0, 151, 197, 0.795);
+    --mid-sea: #0d5b88;
+    --creamier: #fffdda;
     --coral-light: #f07067b9;
 
     --off-white: rgb(255, 252, 240);
@@ -55,6 +57,7 @@ p {
     margin: 0 0.2rem;
 }
 
+/* style all the buttons to be the same */
 button {
     -webkit-appearance:none;
     appearance:none;
@@ -69,30 +72,37 @@ button {
 }
 
 button:active {
-    background-color: var(--deep-sea);
-    color: var(--light-turquoise);
-}
-
-button:hover,
-button:focus {
     outline: 2px dashed var(--cream);
     background-color: var(--peach);
     color: var(--sea-blue);
 }
 
+
+button:hover,
+button:focus {
+    outline: 2px dashed var(--cream);
+    background-color: var(--mid-sea);
+    color: var(--creamier);
+}
+
 /* specialty classes */
+
+/* use this class to toggle hide/show of a section */
 .hide {
     display: none;
 }
 
+/* this class is unused but if ever you want the reset quiz button (or another button) to be hidden, toggle add/remove this class */
 .invisible {
     visibility: hidden;
 }
 
+/* set serif font */
 .fancy {
     font-family: "Didot", "Georgia", Times, serif;
 }
 
+/* for italicised text */
 .italicised {
     font-style: italic;
 }
@@ -124,21 +134,20 @@ header div {
     flex: 0 0 auto;
 }
 
+/* to make the circle around the timer */
 .timer-div {
-    background-color: var(--cream);
     display:flex;
     flex-flow: column;
     justify-content: center;
     align-items: center;
-
     height: 6.5rem;
     width: 6.5rem;
-
-    margin: 0.5rem;
-
+    background-color: var(--cream);
     border-radius: 50%;
+    margin: 0.5rem;
 }
 
+/* for the timer countdown text */
 #timer-span {
     font-weight: bold;
     font-size: 1.4rem;
@@ -147,6 +156,7 @@ header div {
 
 /* MAIN (general) */
 
+/* main container to add flex layout */
 .main-flexbox {
     display: flex;
     flex-flow: column;
@@ -161,16 +171,14 @@ header div {
     flex: 0 0 auto;
 }
 
+/* class for styling the box in which sections of text appears */
 .content-div {
-    background-color: var(--off-white);
-
     display: flex;
     flex-flow: column;
     align-items: center;
-
+    background-color: var(--off-white);
     border-radius: 30px;
     box-shadow: 0.2rem 0.2rem 1rem 0.5rem var(--coral-light);
-    
     padding: 15%;
 }
 
@@ -179,7 +187,8 @@ header div {
 
 /* QUIZ BOX: welcome section */
 
-#welcome-message {
+#welcome-message,
+#player-details-section {
     text-align: center;
 }
 
@@ -226,6 +235,8 @@ header div {
     margin: 0.35rem 0;
 }
 
+/* QUIZ BOX: answer check section */
+
 #answer-check-area {
     width: 100%;
     color: var(--coral);
@@ -233,19 +244,17 @@ header div {
     font-style: italic;
 }
 
+/* text colour for 'correct!' message */
 #correct {
     color: rgba(78, 146, 0, 0.808);
 }
 
+/* text colour for 'incorrect!' message */
 #incorrect {
     color: #df271ae3;
 }
 
 /* QUIZ BOX: input player details section */
-
-#player-details-section {
-    text-align: center;
-}
 
 #player-details-section h2 {
     border-bottom: 2px solid var(--coral);
@@ -284,7 +293,7 @@ header div {
     font-weight: 500;
     background-color: var(--ghost);
     color: var(--deep-sea);
-    border: 2px solid var(--light-turquoise);
+    border: 2px solid var(--turquoise);
     border-radius: 20px;
     padding: 10px 20px;
 }
