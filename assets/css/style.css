@@ -272,6 +272,7 @@ header div {
     padding: 2%;
 }
 
+/* styles for form area and content */
 #user-form {
     display: flex;
     flex-flow: row;
@@ -320,6 +321,7 @@ header div {
     padding: 0.4rem 1.5rem;
 }
 
+/* make high score list display different bg colour for the even-numbered items  */
 #data-list li:nth-child(even) {
     background-color: var(--peach);
 }
@@ -344,6 +346,9 @@ footer {
 
 /* MEDIA QUERIES */
 
+/* the design was made desktop first, so below are styles for screens going smaller and smaller */
+
+/* media queries begin for ipads and tablets */
 @media screen and (max-width: 768px) {
     .content-div {
         padding: 10%;
@@ -353,6 +358,7 @@ footer {
         margin: 0.2rem 0;
     }
 
+    /* ipad and smaller screens should have column flow for user input form */
     #user-form {
         flex-flow: column;
         align-items: center;
@@ -363,6 +369,7 @@ footer {
         display: block;
     }
 
+    /* text field should take up the screen rather than be inline */
     #player-initials-input[type=text] {
         min-width: 100%;
     }
@@ -372,6 +379,7 @@ footer {
     }
 }
 
+/* media queries for phones */
 @media screen and (max-width: 420px) {
     button {
         min-width: 35vw;
@@ -381,6 +389,7 @@ footer {
         padding: 8% 4%;
     }
 
+    /* important to change pseudo element content for small screens because middle dot (•) takes up less space than dash (—) */
     #welcome-message li p::before,
     #welcome-message li p::after {
         content: "•";

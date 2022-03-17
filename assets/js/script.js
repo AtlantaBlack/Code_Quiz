@@ -89,29 +89,6 @@ function showSteps(name) {
 }
 
 
-function viewTheScores() {
-    showHighScores();
-}
-
-
-function startQuiz() {
-    resetTimer();
-    timerElement.textContent = secondsLeft;
-    startTimer();
-    linkToHighScores.disabled = true;
-    loadQuestions();
-}
-
-// when user presses reset quiz: stop and restart timer, return to the welcome page, reset timer countdown to show full seconds left
-function hardReset() {
-    stopTimer();
-    resetTimer();
-    returnToStart();
-    timerElement.textContent = secondsLeft;
-    linkToHighScores.disabled = false;
-}
-
-
 // timer functions
 
 // main timer function that counts the seconds down
@@ -420,7 +397,7 @@ function showHighScores() {
 
     utilityButtonArea.appendChild(goBackBtn);
 
-    goBackBtn.addEventListener("click", returnToStart);
+    goBackBtn.addEventListener("click", hardReset);
 
     // creating button to clear the scores
     var clearScoresBtn = document.createElement("button");
@@ -433,17 +410,41 @@ function showHighScores() {
     clearScoresBtn.addEventListener("click", clearTheScores);
 }
 
-// function to restart
+// utility functions below
+
+// show high scores list
+function viewTheScores() {
+    showHighScores();
+}
+
+// when user presses reset quiz: 
+// (1) stop and restart timer; (2) return to the welcome page; (3) reset timer countdown to show full seconds left; (4) allow view high scores button to work again
+function hardReset() {
+    stopTimer();
+    resetTimer();
+    returnToStart();
+    timerElement.textContent = secondsLeft;
+    linkToHighScores.disabled = false;
+}
+
+// return to welcome page (index resets to 0)
 function returnToStart() {
     showSteps("welcome");
     index = 0;
 }
 
-
-// function to clear the high scores
+// clear the high scores
 function clearTheScores() {
     window.localStorage.clear();
     showHighScores();
+}
+
+function startQuiz() {
+    resetTimer();
+    timerElement.textContent = secondsLeft;
+    startTimer();
+    linkToHighScores.disabled = true;
+    loadQuestions();
 }
 
 // initiate the page
@@ -453,12 +454,15 @@ function initiate() {
 }
 
 
+// EVENT LISTENERS
+
 // event listener button for viewing high scores
 linkToHighScores.addEventListener("click", viewTheScores);
 // button to reset the quiz
 resetQuizButton.addEventListener("click", hardReset);
 // button to start the quiz
 startQuizButton.addEventListener("click", startQuiz);
+
 
 // start the whole thing
 initiate();
