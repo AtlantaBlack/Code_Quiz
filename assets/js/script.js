@@ -1,4 +1,4 @@
-// grab the variables from HTML
+// grab the variables from HTML 
 
 var timerElement = document.getElementById("timer-span");
 var quizBoxArea = document.getElementById("quiz-box");
@@ -85,7 +85,6 @@ function showSteps(name) {
             console.log("showing " + key)
         } else {
             selected.classList.add("hide");
-            selected.classList.remove("show");
             console.log("hiding " + key);
         }
     }
@@ -123,11 +122,6 @@ function startTimer() {
             secondsLeft = 0;
             timerElement.textContent = secondsLeft;
             addPlayerDetails();
-
-            // if index reaches the index of the last question in questionsBank array, clear the timer
-        } else if (index === questionsBank.length) {
-            clearInterval(timer);
-            timerElement.textContent = secondsLeft;
         }
 
     }, 1000);
@@ -145,17 +139,8 @@ function resetTimer() {
 
 function hardReset() {
     stopTimer();
-    console.log("stop " + timer);
-    console.log("stop " + secondsLeft);
-
     resetTimer();
-    console.log("reset " + timer);
-    console.log("reset " + secondsLeft);
-    timerElement.textContent = secondsLeft;
-
     returnToStart();
-    console.log("return " + timer);
-    console.log("return " + secondsLeft);
 
     linkToHighScores.disabled = false;
 }
@@ -297,8 +282,7 @@ function addPlayerDetails() {
     // resetQuizButton.classList.remove("invisible");
 
     var pdsTitle = document.createElement("h2");
-    pdsTitle.classList.add("fancy");
-    pdsTitle.classList.add("italicised");
+    pdsTitle.classList.add("fancy", "italicised");
     pdsTitle.append("You finished the quiz!");
     playerDetailsSection.appendChild(pdsTitle);
 
