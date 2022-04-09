@@ -32,13 +32,15 @@ This application was built using:
 
 ## Screenshots of Application
 
-![Screenshot of Code Quiz](assets/images/screenshot-code-quiz.jpg?raw=true "Javascript Code Quiz screenshot")
+![Screenshot of Code Quiz](assets/images/screenshot-code-quiz-start.jpg?raw=true "Javascript Code Quiz splash screen")
+
+![Screenshot of Code Quiz](assets/images/screenshot-code-quiz-hscores.jpg?raw=true "Javascript Code Quiz high scores")
 
 ---
 
 ## Demo
 
-![Demo of Code Quiz](assets/images/04_code_quiz.gif?raw=true "Javascript Code Quiz demo")
+![Demo of Code Quiz](assets/images/demo-code-quiz.gif?raw=true "Javascript Code Quiz demo")
 
 ---
 
@@ -71,3 +73,9 @@ This application was built using:
 © 2022 Sushan Yue
 
 [MIT License](/LICENSE.txt)
+
+---
+
+## Contact
+
+[Sushan Yue @ GitHub](https://github.com/AtlantaBlack)

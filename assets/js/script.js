@@ -41,7 +41,7 @@ var questionsBank = [
     {   // javascript - variables
         title: "How are variables assigned?",
         choices: ["let", "var", "const", "All of the above"],
-        answer: "Arrays"
+        answer: "All of the above"
     },
     {   // javascript - conditional statements
         title: "What are if/else statements known as?",
