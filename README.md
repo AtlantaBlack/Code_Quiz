@@ -1,22 +1,44 @@
-# BCS HW 04 - Code Quiz
+# Code Quiz
 
 ## Description
 
 Integrating Javascript into a website or application adds a whole new way for users to engage with the content in that website or application. It enhances functionality by introducing dynamic elements to an otherwise static page, which makes a much more interesting user experience overall.
 
-This project is an interactive quiz that allows users to test their knowledge with questions about Javascript basics. The project itself was built using HTML, CSS and Javascript, and utilises Web Browser APIs, such as local storage, to send and retrieve user data (in this case, quiz high scores).
+This project is an interactive quiz that allows users to test their knowledge with questions about Javascript basics. Players have 60 seconds to answer the questions. For every incorrect choice, a penalty of 5 seconds applies to the timer. The faster the player completes the quiz, the better their score — provided, of course, that were no incorrect choices!
 
-To a new developer, the challenges presented in the construction of this project were numerous, and difficult. I found thinking about how to piece together the different functions and, especially, _where_ to place them in the overall code structure was just as tough as writing the code correctly in the first place.
+---
+
+## Technologies Used
+
+This application was built using: 
+
+* HTML
+
+* CSS
+
+* Javascript
+
+* Web Browser APIs (Local Storage)
 
 ---
 
 ## Usage
 
-[Link to deployed application via GitHub Pages](https://atlantablack.github.io/HW04_Code_Quiz/)
+[Link to deployed application via GitHub Pages](https://atlantablack.github.io/Code_Quiz/)
 
-[Link to GitHub repository](https://github.com/AtlantaBlack/HW04_Code_Quiz)
+[Link to GitHub repository](https://github.com/AtlantaBlack/Code_Quiz)
+
+---
+
+## Screenshots of Application
 
 ![Screenshot of Code Quiz](assets/images/screenshot-code-quiz.jpg?raw=true "Javascript Code Quiz screenshot")
+
+---
+
+## Demo
+
+![Demo of Code Quiz](assets/images/04_code_quiz.gif?raw=true "Javascript Code Quiz demo")
 
 ---
 
@@ -41,12 +63,6 @@ To a new developer, the challenges presented in the construction of this project
 [Coding Ninjas - How to create a Javascript quiz code](https://www.codingninjas.com/blog/2020/11/03/how-to-create-a-quiz-in-javascript/)
 
 [Coolors - colour palette generator](https://coolors.co/?home)
-
-AskBCS Learning Assistant
-
-Friday class tutor
-
-Class Notes and fellow students
 
 ---
 
