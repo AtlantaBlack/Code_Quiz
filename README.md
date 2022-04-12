@@ -4,7 +4,7 @@
 
 Integrating Javascript into a website or application adds a whole new way for users to engage with the content in that website or application. It enhances functionality by introducing dynamic elements to an otherwise static page, which makes a much more interesting user experience overall.
 
-This project is an interactive quiz that allows users to test their knowledge with questions about Javascript basics. Players have 60 seconds to answer the questions. For every incorrect choice, a penalty of 5 seconds applies to the timer. The faster the player completes the quiz, the better their score — provided, of course, that were no incorrect choices!
+This project is an interactive quiz that allows users to test their knowledge with questions about Javascript basics. Players have 60 seconds to answer the questions. For every incorrect choice, a penalty of 5 seconds applies to the timer. The faster the player completes the quiz, the better their score — provided, of course, there were no incorrect choices!
 
 ---
 
